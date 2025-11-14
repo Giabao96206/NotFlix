@@ -1,13 +1,18 @@
-doctype html
-block header
-  include ../../partials/container1
-  include ../../partials/header
-  include ../../partials/container2
+extends ../../layout/default.pug
+
+block headExtra
   link(rel="stylesheet", href="../../../../css/style.css")
   link(rel="stylesheet", href="../../../../css/headerresponsive.css")
   link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
   script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
   script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
+  
+block header
+  include ../../partials/container1
+  include ../../partials/header
+  include ../../partials/container2
+
+block content
   #particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
   #intro
       .about-intro
@@ -62,18 +67,18 @@ block header
                   a(href='#' data-year='2021') 2021
             ul.list-film(data-id="1")
               +showMovies(phimle)
-            img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
-            ul.list-film(data-id="2" style="display: none;")
-              +showMovies(years.year2024)
+            //- img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
+            //- ul.list-film(data-id="2" style="display: none;")
+            //-   +showMovies(years.year2024)
             
-            ul.list-film(data-id="3" style="display: none;")
-              +showMovies(years.year2023)
+            //- ul.list-film(data-id="3" style="display: none;")
+            //-   +showMovies(years.year2023)
             
-            ul.list-film(data-id="4" style="display: none;")
-              +showMovies(years.year2022)
+            //- ul.list-film(data-id="4" style="display: none;")
+            //-   +showMovies(years.year2022)
 
-            ul.list-film(data-id="5" style="display: none;")
-              +showMovies(years.year2021)
+            //- ul.list-film(data-id="5" style="display: none;")
+            //-   +showMovies(years.year2021)
             
           #id2.section2(block='three')
             .section2-heading
@@ -120,43 +125,44 @@ block header
                   a(href='#' data-type="phimle") Phim lẻ Việt Nam
                 li
                   a(href='#' data-type="phimbo") Phim bộ Việt Nam
-            ul.list-film(data-id="1")
+            ul.list-film(data-id="1" style="height: 85%;")
               +showMoviesViet(countries.vietnam)
             img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
-            ul.list-film(data-id="2" style="display: none;")
+            ul.list-film(data-id="2" style="display: none; height: 85%;")
               +showMoviesViet(phimviet.vietnamle)
             
-            ul.list-film(data-id="3" style="display: none;")
+            ul.list-film(data-id="3" style="display: none; height: 85%;")
               +showMoviesViet(phimviet.vietnambo)
             
 
   
+
+ 
+
+  script.
+    const products = document.querySelectorAll(".section1-film-container");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          } else {
+            entry.target.classList.remove("active");
+          }
+        });
+      },
+      {
+        root: document.querySelector(".section1-film"),
+        rootMargin: "0px",
+        threshold: 0.6,
+      }
+    );
+
+    products.forEach((product) => {
+      observer.observe(product);
+    });
+
+  script(src="../../../../js/script.products.js" type="module" ) 
+  
 block footer
   include ../../partials/footer
- 
-
-script.
-  const products = document.querySelectorAll(".section1-film-container");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-        } else {
-          entry.target.classList.remove("active");
-        }
-      });
-    },
-    {
-      root: document.querySelector(".section1-film"),
-      rootMargin: "0px",
-      threshold: 0.6,
-    }
-  );
-
-  products.forEach((product) => {
-    observer.observe(product);
-  });
-
-script(src="../../../../js/script.products.js" type="module" ) 
- 

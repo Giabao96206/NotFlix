@@ -1,12 +1,5 @@
 const sql = require("mssql");
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: { encrypt: false, trustServerCertificate: true },
-};
-
+const config = require("../../config/AdminDatabase");
 module.exports.message = async (req, res) => {
   let email = req.params.users;
   if (!email) {

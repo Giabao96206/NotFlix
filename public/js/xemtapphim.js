@@ -130,55 +130,6 @@ icon_forward.addEventListener("click", function () {
   video.currentTime += 10; // Tua tới 10 giây
 });
 
-particlesJS("particles-js", {
-  particles: {
-    number: {
-      value: 80,
-    },
-    color: {
-      value: "#ffffff",
-    },
-    shape: {
-      type: "circle",
-    },
-    opacity: {
-      value: 0.5,
-    },
-    size: {
-      value: 3,
-    },
-    line_linked: {
-      enable: true,
-      distance: 150,
-      color: "#ffffff",
-      opacity: 0.4,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      speed: 2,
-    },
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: true,
-        mode: "repulse", // Các mode khác: "grab", "bubble"
-      },
-      onclick: {
-        enable: true,
-        mode: "push",
-      },
-    },
-    modes: {
-      repulse: {
-        distance: 100,
-      },
-    },
-  },
-  retina_detect: true,
-});
 document.addEventListener("mousemove", function (e) {
   const trail = document.createElement("div");
   trail.className = "trail";
@@ -265,3 +216,7 @@ document
       item.scrollLeft += 300;
     });
   });
+
+const link = document.querySelector("a[name]");
+const nameValue = link.getAttribute("name");
+document.title = nameValue;

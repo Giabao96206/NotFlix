@@ -111,7 +111,7 @@ Verify[0].addEventListener("click", () => {
   const check = async () => {
     let email = document.getElementById("input-email-forgot").value;
     try {
-      let response = await fetch(`http://${host}:3001/selectCode`, {
+      let response = await fetch(`/selectCode`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -130,6 +130,21 @@ Verify[0].addEventListener("click", () => {
       } else {
         console.log("Xác nhận thành công:", data);
         document.getElementById("form-veryfi").style.visibility = "hidden";
+        // chọn phần tử cha
+        const target = document.querySelector(
+          "#main .login .forgot .form-pass"
+        );
+
+        // thêm div ngay sau nó
+        target.insertAdjacentHTML(
+          "afterend",
+          `
+        <div class="form-sub" id="form-reset">
+          <input type="password" placeholder="New Password" />
+          <div class="icon-login"><i class="ti-lock"></i></div>
+        </div>
+      `
+        );
         document.getElementById("form-reset").style.display = "block";
         document.getElementsByClassName("button-forgot")[0].style.display =
           "none";

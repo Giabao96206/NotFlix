@@ -32,10 +32,10 @@ mixin showmovie2(a)
  .section1
     .section1-heading
        h2 Phim &dstrok;&#x1EC1; c&#x1EED;
-    .section1-film
+    .section1-film(style="overflow-x: auto; flex-wrap: nowrap;")
       .icon-next
         span#icon-next1.ti-control-play
-      - for(var i = 0; i < 20; i++)
+      - for(var i = 0; i <+ a.length; i++)
         - var randomIndex
         - do {
           - randomIndex = Math.floor(Math.random() * a.length)  // Generate a random number
@@ -44,7 +44,7 @@ mixin showmovie2(a)
         .section1-film-container
           .film-container
               a.link-film(href='/watch/'+a[randomIndex].slug title=`${a[randomIndex].name}`)
-              img(src= `https://phimimg.com/${a[randomIndex].poster_url}` , alt='')
+              img(src= `https://res.cloudinary.com/doppezovj/image/fetch/w_160,h_225,q_auto:good,f_auto/https://phimimg.com/${a[randomIndex].poster_url}` , alt='')
               span.title #{a[randomIndex].episode_current}
               span.film-name #{a[randomIndex].name}
               .overflow_film

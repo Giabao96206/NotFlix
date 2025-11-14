@@ -323,51 +323,6 @@ async function getCurrentCoordinates() {
   });
 }
 
-// Gọi hàm để lấy tọa độ
-getCurrentCoordinates();
-let ipnow = async () => {
-  try {
-    let response = await fetch("https://api.ipify.org?format=json");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    let data = await response.json();
-    console.log("Current IP:", data.ip);
-    return data.ip;
-  } catch (error) {
-    console.error("Error retrieving IP:", error);
-    throw error; // Re-throw the error to handle it in getapiip
-  }
-};
-
-let getapiip = async () => {
-  try {
-    let ipAddress = await ipnow();
-    await getCurrentCoordinates();
-    if (checkcookie2("username") == 1) {
-      console.log("Cookie đã tồn tại");
-    } else {
-      let response = await fetch("/api/getip", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ipadress: ipAddress, kindo, vido }),
-      });
-      if (response.ok) {
-        console.log("IP successfully sent");
-        checkCookie("username", 1);
-      } else {
-        console.error("Error sending IP:", response.statusText);
-      }
-    }
-  } catch (err) {
-    console.error("Error sending request:", err.message);
-  }
-};
-
-getapiip();
-
 particlesJS.load("particles-js", "particles.json", function () {
   console.log("particles.js loaded");
 });

@@ -75,7 +75,7 @@ mixin show(a, b)
               - } while (usedIndexes.includes(randomIndex)) // Repeat if the number already exists
               - usedIndexes.push(randomIndex)
               li.list-small
-                img(src=`https://phimimg.com/${a[i].poster_url}` alt=`${a[i].name}`)
+                img.loading-lazy( src= `${a[i].poster_url.includes("upload") ? "https://phimimg.com/" + a[i].poster_url : a[i].poster_url}` data-srcset=`${a[i].poster_url.replace('.jpg', '-400.jpg')} 400w, ${a[i].poster_url.replace('.jpg', '-800.jpg')} 800w` data-sizes="(max-width: 768px) 400px, 800px" alt=a[i].name)
                 span.title #{a[i].lang} - #{a[i].quality}
                 span.film-name #{a[i].name}
                 .icon-pause

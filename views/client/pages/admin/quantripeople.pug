@@ -1,0 +1,132 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(
+      content="width=device-width, initial-scale=1.0" 
+      name="viewport"
+      )
+    title Admin Dashboard
+    script(src="https://cdn.tailwindcss.com")
+  body.bg-gray-100.min-h-screen.flex
+    // Sidebar
+    aside.w-64.bg-white.shadow-md.hidden(class="md:block")
+      .p-6.font-bold.text-xl.border-b Quản trị
+      nav.mt-4
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin"
+          ) Trang chủ
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/users"
+          ) Quản lí người dùng
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/films"
+          ) Phim
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="#"
+          ) Cài đặt
+    // Main content
+    .flex-1.flex.flex-col
+      // Navbar
+      header.bg-white.shadow-md.p-4.flex.justify-between.items-center
+        .text-lg.font-semibold Admin Panel
+        .text-sm.text-gray-600.flex.items-center
+          p Xin chào, Admin
+          .w-10.h-10.ml-2
+            img.w-full.h-full.object-cover.rounded-full(
+              alt="" 
+              src="./Component/image/background1.jpg"
+              )
+      // Content
+      main.p-6
+        // Toggle Button
+        .mb-4
+          button.bg-green-600.text-white.px-4.py-2.rounded(
+            class="hover:bg-green-700" 
+            onclick="toggleForm()"
+            ) + Thêm / Sửa Người Dùng
+        // Form (ẩn/hiện)
+        #user-form-container.max-w-5xl.mx-auto.mt-10.bg-white.p-6.rounded-xl.shadow-md.hidden
+          h2.text-2xl.font-bold.mb-4 Thêm / Sửa người dùng
+          form#user-form.space-y-4
+            input#edit-index(
+              value="" 
+              type="hidden"
+              )
+            div
+              label.block.text-sm.font-medium.text-gray-700 Họ và tên
+              input#name.mt-1.block.w-full.border.border-gray-300.rounded-lg.p-2(
+                required="" 
+                class="focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                type="text"
+                )
+            div
+              label.block.text-sm.font-medium.text-gray-700 Email
+              input#email.mt-1.block.w-full.border.border-gray-300.rounded-lg.p-2(
+                required="" 
+                class="focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                type="email"
+                )
+            div
+              label.block.text-sm.font-medium.text-gray-700 Password
+              .relative
+                input#password.mt-1.block.w-full.border.border-gray-300.rounded-lg.p-2(
+                  required="" 
+                  class="focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  type="text"
+                  )
+                button.absolute.top-0.right-0.p-2.text-gray-600(
+                  onclick="togglePasswordVisibility()" 
+                  class="hover:text-gray-900" 
+                  type="button"
+                  )
+                  | Xem
+                  i#password-eye.fas.fa-eye
+            div
+              label.block.text-sm.font-medium.text-gray-700 Phone
+              input#phone.mt-1.block.w-full.border.border-gray-300.rounded-lg.p-2(
+                class="focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                type="number"
+                )
+            div
+              label.block.text-sm.font-medium.text-gray-700 Địa chỉ
+              select#province.p-4.text-gray-700(class="hover:bg-gray-100")
+            div
+              label.block.text-sm.font-medium.text-gray-700 Vai trò
+              select#role.mt-1.block.w-full.border.border-gray-300.rounded-lg.p-2(class="focus:outline-none focus:ring-2 focus:ring-blue-500")
+                option user
+                option admin
+            button.bg-blue-600.text-white.px-4.py-2.rounded-lg.transition.btn-add(
+              class="hover:bg-blue-700" 
+              type="submit"
+              ) Thêm
+        // User Table
+        .max-w-5xl.mx-auto.mt-10.bg-white.p-6.rounded-xl.shadow-md
+          h2.text-xl.font-bold.mb-4 Danh sách người dùng
+          input#search.mb-4.p-2.border.rounded.w-full(
+            placeholder="Tìm kiếm người dùng..." 
+            type="text"
+            )
+          .overflow-x-auto
+            table.min-w-full.divide-y.divide-gray-200
+              thead.bg-gray-100
+                tr
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Tên người dùng
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Email
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Phone
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Địa chỉ
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Vai trò
+                  th.px-6.py-3
+              tbody#user-table.bg-white.divide-y.divide-gray-200
+                // Users will be injected here
+            #pagination.flex.justify-center.mt-4.space-x-2
+script. 
+  let userss  = !{JSON.stringify(users)};
+  let admins = !{JSON.stringify(admin)};
+  console.log(admins);
+
+script(src="../../../../js/admin/quantri.admin.js")

@@ -19,17 +19,7 @@ function getLocalIP() {
   return "localhost";
 }
 // Cấu hình SQL Server
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: {
-    encrypt: false,
-    trustServerCertificate: true,
-  },
-};
-
+let config = require("../../../config/AdminDatabase");
 // API thêm người dùng
 
 const adduser = (app) => {

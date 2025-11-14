@@ -36,6 +36,13 @@ document
     if (ngonngu != "Ngôn ngữ") console.log(ngonngu);
     let data;
 
+    console.log("num", num);
+    console.log("theloai", theloai);
+    console.log("quocgia", quocgia);
+    console.log("namphathanh", namphathanh);
+    console.log("hinhthuc", hinhthuc);
+    console.log("ngonngu", ngonngu);
+
     try {
       const response = await fetch(`/api/phantrang1`, {
         method: "POST",
@@ -110,55 +117,6 @@ document
     }
   });
 
-particlesJS("particles-js", {
-  particles: {
-    number: {
-      value: 100,
-    },
-    color: {
-      value: "#ffffff",
-    },
-    shape: {
-      type: "circle",
-    },
-    opacity: {
-      value: 0.5,
-    },
-    size: {
-      value: 3,
-    },
-    line_linked: {
-      enable: true,
-      distance: 150,
-      color: "#ffffff",
-      opacity: 0.4,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      speed: 2,
-    },
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: true,
-        mode: "repulse", // Các mode khác: "grab", "bubble"
-      },
-      onclick: {
-        enable: true,
-        mode: "push",
-      },
-    },
-    modes: {
-      repulse: {
-        distance: 100,
-      },
-    },
-  },
-  retina_detect: true,
-});
 let list_small = document.querySelectorAll(
   ".main-content .content .container .list-film .list-small"
 );

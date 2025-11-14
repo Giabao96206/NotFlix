@@ -1,0 +1,149 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(
+      content="width=device-width, initial-scale=1.0" 
+      name="viewport"
+      )
+    title Admin Dashboard
+    script(src="https://cdn.tailwindcss.com")
+  body.bg-gray-100.min-h-screen.flex
+    // Sidebar
+    aside.w-64.bg-white.shadow-md.hidden(class="md:block")
+      .p-6.font-bold.text-xl.border-b Quản trị
+      nav.mt-4
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin"
+          ) Trang chủ
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/users"
+          ) Quản lí người dùng
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/films"
+          ) Phim
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="#"
+          ) Cài đặt
+    // Main content
+    .flex-1.flex.flex-col
+      // Navbar
+      header.bg-white.shadow-md.p-4.flex.justify-between.items-center
+        .text-lg.font-semibold Admin Panel
+        .text-sm.text-gray-600.flex.items-center
+          p Xin chào, Admin
+          .w-10.h-10.ml-2
+            img.w-full.h-full.object-cover.rounded-full(
+              alt="" 
+              src="../../../../imgage/coco.jpg"
+              )
+      // Content
+      main.p-6
+        // Form (ẩn/hiện)
+        main#edit-film.p-6.hidden(value="")
+          input#value-film.hidden(
+            value="" 
+            type="text"
+            )
+          .max-w-6xl.mx-auto.bg-white.p-6.rounded-lg.shadow-md
+            .flex.justify-between.items-center.mb-4
+              button#back.text-blue-600(
+                onclick="goBack()" 
+                class="hover:underline"
+                ) ← Quay lại
+              button#update-film.bg-teal-500.text-white.px-4.py-2.rounded(class="hover:bg-teal-600") Cập nhật
+            .flex.border-b.mb-4.text-sm.font-medium
+              button.px-4.py-2.border-b-2.border-blue-600.text-blue-600 Thông tin phim
+              button.px-4.py-2.text-gray-600(class="hover:text-blue-600") Danh sách video phim
+              button.px-4.py-2.text-gray-600(class="hover:text-blue-600") Review
+            form.grid.grid-cols-1.gap-6(class="md:grid-cols-3")
+              // Cột trái
+              .space-y-4(class="md:col-span-2")
+                div
+                  label.block.font-medium Tên phim
+                  input#name-film.w-full.border.border-gray-300.rounded.p-2.mt-1(type="text")
+                div
+                  label.block.font-medium Slug tìm kiếm
+                  input#about-fim.w-full.border.border-gray-300.rounded.p-2.mt-1(rows="4")
+                div
+                  label.block.font-medium Phụ đề
+                  input#phude-film.w-full.border.border-purple-300.rounded.p-2.mt-1(type="text")
+                div
+                  label.block.font-medium Thời gian
+                  input#time.w-full.border.border-purple-300.rounded.p-2.mt-1( 
+                    type="text"
+                    )
+                div
+                  label.block.font-medium Danh mục
+                  input#category.w-full.border.border-purple-300.rounded.p-2.mt-1(
+                    type="text"
+                    )
+              // Cột phải
+              .space-y-4
+                div
+                  label.block.font-medium Quốc gia
+                  input#country.w-full.border.border-purple-300.rounded.p-2.mt-1(
+                    type="text"
+                    )
+                div
+                  label.block.font-medium Chiếu rạp
+                  select#release.w-full.border.border-gray-300.rounded.p-2.mt-1
+                    option(value="true")  Chiếu rạp
+                    option(value="false")  Không chiếu rạp
+                div
+                  label.block.font-medium Năm phát hành
+                  input#year.w-full.border.border-gray-300.rounded.p-2.mt-1(
+                    type="number"
+                    )
+                div
+                  label.block.font-medium Loại phim
+                  select#loaiphim.w-full.border.border-gray-300.rounded.p-2.mt-1
+                    option(value="series") Phim bộ
+                    option(value="single") Phim lẻ
+                div
+                  label.block.font-medium.mb-2 Ảnh phim
+                  // Input file ẩn
+                  input#input-img.hidden(
+                    accept="image/*" 
+                    onchange="readURL(this);" 
+                    type="file"
+                    )
+                  // Ảnh xem trước
+                  img#preview-img.w-full.rounded.mb-2(src='')
+                  // Nút chọn ảnh
+                  button.bg-blue-600.text-white.px-3.py-2.rounded(
+                    class="hover:bg-blue-700" 
+                    onclick="document.getElementById('input-img').click();" 
+                    type="button"
+                    ) Chọn hình ảnh
+                  // Script xem trước ảnh
+                
+        // User Table
+        #user-table.max-w-full.mx-auto.mt-10.bg-white.p-6.rounded-xl.shadow-md
+          h2.text-xl.font-bold.mb-4 Danh sách phim
+          input#search.mb-4.p-2.border.rounded.w-full(
+            placeholder="Tìm kiếm phim..." 
+            type="text"
+            )
+          .overflow-x-auto
+            table.min-w-full.divide-y.divide-gray-200
+              thead.bg-gray-100
+                tr
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Tên phim
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Loại phim
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Nắm phát hành
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Quốc gia
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Thể loại
+                  th.px-6.py-3
+              tbody#film-table.bg-white.divide-y.divide-gray-200
+                // Users will be injected here
+            #pagination.flex.justify-center.mt-4.space-x-2.overflow-x-auto
+
+
+script. 
+  let film  = !{JSON.stringify(Phim)};
+script(src="../../../../js/admin/quantriphim.admin.js")

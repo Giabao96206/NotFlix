@@ -427,13 +427,13 @@
   }
 
   #main-content .content .container .section2-heading ul li a {
-    padding: 8px 12px;
+    padding: 8px 10px;
     background-color: #504d49;
     margin-left: 8px;
     text-decoration: none;
     color: white;
     display: inline-table;
-    font-size: 25px;
+    font-size: 14px;
   }
   #main-content {
     padding-bottom: 1px;

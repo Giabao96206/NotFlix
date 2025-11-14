@@ -4,7 +4,7 @@ mixin showMovies(a)
   li.list-large
     - var x = Math.floor(Math.random() * a.length)
     - usedIndexes = [x]
-    img(src=`https://phimimg.com/${a[x].poster_url}`, alt='')
+    img(src=`https://phimimg.com/${a[x].poster_url}`, loading="lazy" alt='')
     span.title #{a[x].quality} - #{a[x].lang}
     span.film-name #{a[x].name}
     .icon-pause
@@ -17,7 +17,7 @@ mixin showMovies(a)
     - } while (usedIndexes.includes(randomIndex)) // Repeat if the number already exists
     - usedIndexes.push(randomIndex) // Save the used number to avoid duplicates
     li.list-small
-      img(src=`https://phimimg.com/${a[randomIndex].poster_url}`, alt='')
+      img(src=`https://phimimg.com/${a[randomIndex].poster_url}`,  loading="lazy" alt='')
       span.title #{a[randomIndex].quality} - #{a[randomIndex].lang}
       span.film-name #{a[randomIndex].name}
       .icon-pause
@@ -29,7 +29,7 @@ mixin showMovies2(a)
   li.list-large
     - var x = Math.floor(Math.random() * a.length) 
     - usedIndexes = [x]
-    img(src=a[x].poster_url || `https://phimimg.com/${a[randomIndex].poster_url}`, alt='')
+    img(src=a[x].poster_url || `https://phimimg.com/${a[randomIndex].poster_url}`,  loading="lazy" alt='')
     span.title #{a[x].quality} - #{a[x].lang}
     span.film-name #{a[x].name}
     .icon-pause
@@ -42,7 +42,7 @@ mixin showMovies2(a)
     - } while (usedIndexes.includes(randomIndex)) // Repeat if the number already exists
     - usedIndexes.push(randomIndex) // Save the used number to avoid duplicates
     li.list-small
-      img(src=a[randomIndex].poster_url, alt='')
+      img(src=a[randomIndex].poster_url,  loading="lazy" alt='')
       span.title #{a[randomIndex].quality} - #{a[randomIndex].lang}
       span.film-name #{a[randomIndex].name}
       .icon-pause

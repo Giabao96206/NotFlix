@@ -1,80 +1,92 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title Document
-    link(rel='stylesheet', href='../../../../css/styleprofile.css')
-    link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
-  body
+extends ../../layout/default.pug
+
+block headExtra
+  link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
+  script(src='https://cdn.jsdelivr.net/npm/hls.js@latest')
+  link(rel='stylesheet', href='../../../../css/styleprofile.css')
+
 block header
   include ../../partials/header
   include ../../partials/searchmain
-  link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
-  script(src='https://cdn.jsdelivr.net/npm/hls.js@latest')
-// Phần content
-//- script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
-//- #particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
-doctype html
-.profile-page
-  // Ảnh bìa
-  .cover-photo
-  - if (profile.background_image)
-      img(src= `${profile.background_image}` alt='Ảnh bìa')
-  // Thông tin chính
-  .profile-info
-    .avatar-wrapper
-      img.avatar(src=`${profile.url_image}` alt='Avatar')
+
+block content
+  // Phần content
+  //- script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
+  //- #particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
+  .profile-page
+    // Ảnh bìa
+    .cover-photo
+    - if (profile.background_image)
+        img(src= `${profile.background_image}` alt='Ảnh bìa')
+    // Thông tin chính
+    .profile-info
+      .avatar-wrapper
+        img.avatar(src=`${profile.url_image}` alt='Avatar')
+        if (user.email === profile.email)
+          button.change-avatar-btn(onclick="document.getElementById('avatar-input').click()")
+            | &#x1F4F7;
+          input#avatar-input(type='file' accept='image/*' style='display: none' onchange='changeAvatar(event)')
+          .avatar-action-buttons(style='display: none; margin-top: 10px; text-align: center')
+            button(onclick='confirmAvatar()') &#x2705; L&#x1B0;u &#x1EA3;nh
+            button(onclick='cancelAvatar()') &#x274C; H&#x1EE7;y
+      h2 #{profile.username}
+      p#bio #{profile.about_me || 'Chưa cập nhật'}
+      //- .buttons
+      //-   button &#x1F4AC; Nh&#x1EAF;n tin
+      //-   button &#x1F4F9; G&#x1ECD;i video
+
+    // Tabs
+    .tabs
+      a(href='#' id='tab-posts') B&agrave;i vi&#x1EBF;t
+      a(href='#') &#x1EA2;nh
+      a(href='#' id='tab-friends') B&#x1EA1;n b&egrave;
+      a(href='#' id='tab-connect') Kết nối
+    // Thông tin phụ
+    .profile-details
+      h3 Gi&#x1EDB;i thi&#x1EC7;u
+      #info-display
+        p#location(style='display: inline-block') &#x1F30D; Sống tại:
+          span.about-location #{profile.address || 'Chưa cập nhật'}
+        if (profile.linkfb == null)
+          p#work 👉 Link FB:
+            span.about-linkfb  Chưa cập nhật
+        else 
+          p#work 👉 Link FB:
+            a.about-linkfb(href=`${profile.linkfb}` target='_blank') #{profile.linkfb}
+        p#phone &#x1F4DE; Số điện thoại:
+          span.about-phone  #{profile.phone}
+        p#email(style='display: inline-block') &#x1F4E7; 
+        span.about-email Email: #{profile.email}
+      #info-edit(style='display: none')
+        input#edit-location(type='text' placeholder='Sống tại...')
+        input#edit-work(type='text' placeholder='Link FaceBook...')
+        input#edit-phone(type='text' placeholder='Số điện thoại...')
+        input#edit-bio(type='text' placeholder='Tiểu sử...')
+        .edit-buttons
+          button(onclick='saveInfo()') &#x2705; L&#x1B0;u
+          button(onclick='cancelEdit()') &#x274C; H&#x1EE7;y
       if (user.email === profile.email)
-        button.change-avatar-btn(onclick="document.getElementById('avatar-input').click()")
-          | &#x1F4F7;
-        input#avatar-input(type='file' accept='image/*' style='display: none' onchange='changeAvatar(event)')
-        .avatar-action-buttons(style='display: none; margin-top: 10px; text-align: center')
-          button(onclick='confirmAvatar()') &#x2705; L&#x1B0;u &#x1EA3;nh
-          button(onclick='cancelAvatar()') &#x274C; H&#x1EE7;y
-    h2 #{profile.username}
-    p#bio #{profile.about_me || 'Chưa cập nhật'}
-    //- .buttons
-    //-   button &#x1F4AC; Nh&#x1EAF;n tin
-    //-   button &#x1F4F9; G&#x1ECD;i video
+        // Nút chỉnh sửa thông tin
+        div(style='margin-top: 10px')
+          button(onclick='editInfo()') &#x270F;&#xFE0F; Ch&#x1EC9;nh s&#x1EED;a th&ocirc;ng tin
+    #friends-list(
+    style=" display: none; margin-top: 20px; background-color: #242526; padding: 20px; border-radius: 10px; ")
+      h3(
+        style="margin-bottom: 16px;"
+        ) Bạn bè
+      .danhsach
+    #friends-list2(
+    style=" display: none; margin-top: 20px; background-color: #242526; padding: 20px; border-radius: 10px; ")
+      .danhsach
+    
 
-  // Tabs
-  .tabs
-    a(href='#') B&agrave;i vi&#x1EBF;t
-    a(href='#') &#x1EA2;nh
-    a(href='#') B&#x1EA1;n b&egrave;
-    a(href='#') Gi&#x1EDB;i thi&#x1EC7;u
-  // Thông tin phụ
-  .profile-details
-    h3 Gi&#x1EDB;i thi&#x1EC7;u
-    #info-display
-      p#location(style='display: inline-block') &#x1F30D; Sống tại:
-       span.about-location #{profile.address || 'Chưa cập nhật'}
-      if (profile.linkfb == null)
-        p#work 👉 Link FB:
-          span.about-linkfb  Chưa cập nhật
-      else 
-        p#work 👉 Link FB:
-          a.about-linkfb(href=`${profile.linkfb}` target='_blank') #{profile.linkfb}
-      p#phone &#x1F4DE; Số điện thoại:
-        span.about-phone  #{profile.phone}
-      p#email &#x1F4E7; 
-       span.about-email Email: #{profile.email}
-    #info-edit(style='display: none')
-      input#edit-location(type='text' placeholder='Sống tại...')
-      input#edit-work(type='text' placeholder='Link FaceBook...')
-      input#edit-phone(type='text' placeholder='Số điện thoại...')
-      input#edit-bio(type='text' placeholder='Tiểu sử...')
-      .edit-buttons
-        button(onclick='saveInfo()') &#x2705; L&#x1B0;u
-        button(onclick='cancelEdit()') &#x274C; H&#x1EE7;y
-    if (user.email === profile.email)
-      // Nút chỉnh sửa thông tin
-      div(style='margin-top: 10px')
-        button(onclick='editInfo()') &#x270F;&#xFE0F; Ch&#x1EC9;nh s&#x1EED;a th&ocirc;ng tin
-script. 
-  let user = !{JSON.stringify(user)};
-  let profiles = !{JSON.stringify(profile)};
 
- 
-script(src='../../../../js/profile.js')
+  script. 
+    let user = !{JSON.stringify(user)};
+    let profiles = !{JSON.stringify(profile)};
+    let moreFriend = !{JSON.stringify(moreFriend)};
+    console.log(user)
+
+  
+  script(src='../../../../js/profile.js')
+

@@ -8,13 +8,7 @@ app.use(express.json()); // Middleware để parse JSON request body
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: { encrypt: false, trustServerCertificate: true },
-};
+let config = require("../../../config/AdminDatabase");
 
 let checklogin = (app) => {
   // app.post("/checklogin",
@@ -49,6 +43,7 @@ let checklogin = (app) => {
         email: user.email,
         name: user.username,
         avatar: user.url_image,
+        role: user.role,
       };
 
       res.status(200).json({
@@ -57,6 +52,7 @@ let checklogin = (app) => {
           email: user.email,
           name: user.username,
           avatar: user.url_image,
+          role: user.role,
         },
       });
     } catch (err) {

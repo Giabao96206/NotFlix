@@ -1,0 +1,20 @@
+const mongoose = require("mongoose");
+
+let add = "tranvangiabao96206_db_user";
+let pass = "sQfevT3e3BQGxpiO";
+
+const connectdtb = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://tranvangiabao96206_db_user:<db_password>@cluster0.l2gjlbd.mongodb.net/?appName=Cluster0&retryWrites=true&w=majority".replace(
+        "<db_password>",
+        pass
+      )
+    );
+    console.log("Kết nối database thành công!");
+  } catch (error) {
+    console.log("Kết nối database thất bại!");
+  }
+};
+
+connectdtb();

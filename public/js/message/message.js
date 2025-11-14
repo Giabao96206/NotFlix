@@ -275,21 +275,6 @@ socket.on("send_private_message", (data) => {
 
   chatContent.appendChild(message);
 
-  // const messageDiv = document.createElement("div");
-  // messageDiv.classList.add("message", isMine ? "right" : "left");
-  // if (!isMine) {
-  //   messageDiv.innerHTML = `
-  //     <div class="img-profile"><img src="${msg.sender_img}"></div>
-  //     <span class="${isMine ? "right" : "other"}">${msg.content}</span>`;
-  // } else {
-  //   messageDiv.innerHTML = `
-  //     <span class="${isMine ? "right" : "other"}">${msg.content}</span>
-  //           <div class="img-profile"><img src="${msg.sender_img}"></div>`;
-  // }
-  // chatContent.appendChild(messageDiv);
-
-  // console.log(data);
-  // console.log(data.images);
   if (data.images.length > 0) {
     const imgWrapper = document.createElement("div");
     imgWrapper.classList.add(isMine ? "img-right" : "img-left");
@@ -302,6 +287,35 @@ socket.on("send_private_message", (data) => {
   }
 
   scrollToBottom(); // Cuộn xuống cuối chat khi có tin nhắn mới
+
+  // ⚡ Đặt title khi có tin nhắn mới từ người khác
+  let blinkInterval; // để lưu interval
+  let isBlinking = false;
+
+  function notifyNewMessage() {
+    if (isBlinking) return; // nếu đang nhấp nháy rồi thì không tạo thêm
+    isBlinking = true;
+
+    let showNew = true;
+    blinkInterval = setInterval(() => {
+      document.title = showNew ? "📩 Bạn có tin nhắn mới!" : "Messenger Clone";
+      showNew = !showNew;
+    }, 1000); // đổi title mỗi giây
+  }
+
+  function stopNotify() {
+    clearInterval(blinkInterval);
+    document.title = "Messenger Clone"; // reset về mặc định
+    isBlinking = false;
+  }
+
+  // Giả sử khi có tin nhắn mới từ người khác
+  if (!isMine) {
+    notifyNewMessage();
+  }
+
+  // Khi người dùng quay lại tab (ví dụ click xem tin nhắn) thì tắt nhấp nháy
+  window.addEventListener("focus", stopNotify);
 });
 
 // Gửi tin nhắn
@@ -477,42 +491,6 @@ document
       "width=1000,height=1000,left=100,top=100,noopener"
     );
   });
-
-// const tooltip = document.getElementById("hover-tooltip");
-// // console.log(tooltip);
-
-// document.addEventListener("mouseover", (e) => {
-//   const userDiv = e.target.closest(".user-chat");
-//   if (userDiv) {
-//     const email = userDiv.querySelector(".user-link")?.dataset.email;
-//     const username = userDiv.querySelector(
-//       "#chat-list .user-chat .user-name"
-//     )?.textContent;
-//     const imgSrc = userDiv.querySelector("img")?.src;
-
-//     tooltip.innerHTML = `
-//       <div style="display: flex; align-items: center;">
-//         <img src="${imgSrc}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 8px;" />
-//         <div>
-//           <strong style=" color: black">${username}</strong><br/>
-//           <span style="font-size: 12px; color: black">${email}</span>
-//         </div>
-//       </div>
-//     `;
-//     tooltip.style.display = "block";
-//   }
-// });
-
-// document.addEventListener("mousemove", (e) => {
-//   tooltip.style.top = `${e.pageY + 10}px`;
-//   tooltip.style.left = `${e.pageX + 10}px`;
-// });
-
-// document.addEventListener("mouseout", (e) => {
-//   if (e.target.closest(".user-chat")) {
-//     tooltip.style.display = "none";
-//   }
-// });
 
 document
   .querySelector("emoji-picker")

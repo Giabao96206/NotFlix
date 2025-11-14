@@ -3,17 +3,7 @@ const cors = require("cors");
 const app = express();
 const os = require("os"); // Đảm bảo đã require 'os' module
 const networkInterfaces = os.networkInterfaces();
-function getLocalIP() {
-  for (const interfaceName in networkInterfaces) {
-    for (const iface of networkInterfaces[interfaceName]) {
-      if (iface.family === "IPv4" && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return "localhost";
-}
-
+let fetchAPI = require("../../helpers/FetchAPI");
 app.use(express.json()); // Middleware để parse JSON request body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
@@ -30,17 +20,6 @@ async function getProducts(model, query) {
   const products = await model.find(query);
   return products;
 }
-
-const fetchAPI = async (api) => {
-  try {
-    const response = await fetch(api);
-    const data = await response.json();
-    return data?.items || data?.data?.items || data || [];
-  } catch (error) {
-    console.error(`Lỗi khi gọi API: ${api}`, error);
-    return [];
-  }
-};
 
 const { year } = require("../client/phantrang.controllers.js");
 

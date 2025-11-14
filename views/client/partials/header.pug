@@ -1,5 +1,5 @@
 link(rel='stylesheet' href='./Component/Icon/themify-icons/themify-icons.css')
- 
+
 #header
   #nav
     .nav1
@@ -127,27 +127,23 @@ link(rel='stylesheet' href='./Component/Icon/themify-icons/themify-icons.css')
           a(href='/search/phim-chieu-rap/page-1') PHIM CHI&#x1EBE;U R&#x1EA0;P
         li.help1.mobile-help1.close
           a(href='#') TRAILER
-        li.help1.mobile-help1.list
-          a(href='#') TOP PHIM
-          ul.subnav
-            li.category
-              a(href='#') Phim Netflix
-            li.category
-              a(href='#') Phim DC Comic
-            li.category
-              a(href='#') Phim IMDB
-            li.category
-              a(href='#') Phim TOP
+ 
       form#form-search(method='get' action ='/search/tim-kiem')
         input(placeholder='Tìm kiếm tên diễn viên phim' type='text' name='keyword'  id='')
         ul.goiy
           img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
+
       if !user
         .ti-user
           .login
             a(href='/login') &Dstrok;&abreve;ng nh&#x1EAD;p
             a(href='/signup')  &Dstrok;&abreve;ng k&yacute;
+
       else
+        .notification
+          i.ti-bell
+          .more-notification
+            ul.add-friend
         .login-sucess
           img.img-1(src= `${user.avatar}` alt='')
           .about-user
@@ -168,9 +164,12 @@ link(rel='stylesheet' href='./Component/Icon/themify-icons/themify-icons.css')
               .more-option
                 ul
                   li
-                    a(href='#') T&#x1EE7; phim
+                    a(href='/me/tuphim') T&#x1EE7; phim
                   li
                     a(href='#') L&#x1ECB;ch s&#x1EED; xem phim
+                  if user.role == 'admin'
+                    li
+                      a(href='/admin') Qu&#x1EA3;n l&#x1ECB; Admin
                   li
                     a(href=`/message/${user.email}`) Tr&ograve; Chuy&#x1EC7;n
                   li(class='logout')
@@ -278,25 +277,16 @@ link(rel='stylesheet' href='./Component/Icon/themify-icons/themify-icons.css')
           a(href='/search/phim-chieu-rap/page-1') PHIM CHI&#x1EBE;U R&#x1EA0;P
         li.help1.mobile-help1.close
           a(href='#') TRAILER
-        li.help1.mobile-help1.list
-          a(href='#') TOP PHIM
-          ul.subnav
-            li.category
-              a(href='#') Phim Netflix
-            li.category
-              a(href='#') Phim DC Comic
-            li.category
-              a(href='#') Phim IMDB
-            li.category
-              a(href='#') Phim TOP
       form#form-search(method='get' action ='/search/tim-kiem')
         input(placeholder='Tìm kiếm tên diễn viên phim' type='text' name='keyword'  id='')
         ul.goiy
           img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
           li 
-        
+script. 
+ let users = !{JSON.stringify(user)};   
 script(src='../../../js/timkiemgoiy.js')
 script(src='../../../js/responsiveheader.js')
+script(src='../../../js/headerbell.js')
 block header
 
 link(rel='stylesheet' href='../../../css/styleheader.css')

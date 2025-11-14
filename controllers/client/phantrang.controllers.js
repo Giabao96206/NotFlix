@@ -1,49 +1,33 @@
-const {
-  PhimLe,
-  PhimBo,
-  PhimVienTuong,
-} = require("../../models/products.model.js");
+const { PhimLe, PhimBo } = require("../../models/products.model.js");
 const { connectdtb } = require("../../config/database.js");
+const NodeCache = require("node-cache");
+
 connectdtb();
+const cache = new NodeCache({ stdTTL: 300 }); // Cache 5 phút
 
-function splitMoviesStable(movies, chunkSize = 20) {
-  const result = [null];
-  for (let i = 0; i < movies.length; i += chunkSize) {
-    const chunk = movies.slice(i, i + chunkSize);
-    result.push(chunk);
-  }
-  return result;
+async function getProductsPaginated(model, query, page = 1, limit = 20) {
+  const skip = (page - 1) * limit;
+  return await model.find(query).skip(skip).limit(limit).exec();
 }
 
-async function getProducts(model, query) {
-  const products = await model.find(query).sort({ _id: 1 }).exec();
-  return products;
+async function countProducts(model, query) {
+  return await model.countDocuments(query).exec();
 }
-const fetchAPI = async (api) => {
-  try {
-    const response = await fetch(api);
-    const data = await response.json();
-    return data?.items || data?.data?.items || [];
-  } catch (error) {
-    console.error(`Lỗi khi gọi API: ${api}`, error);
-    return [];
-  }
-};
 
-let cachedMoviePages = {};
-
-const taomang = async (a, b) => {
-  let film = await getProducts(a, b); // Lấy dữ liệu đã được sort
-  const movieChunks = splitMoviesStable(film); // Chia nhóm
-  return movieChunks;
-};
+async function getCombinedFilms(modelA, modelB, query, page = 1, limit = 20) {
+  const skip = (page - 1) * limit;
+  const filmsA = await modelA.find(query).skip(skip).limit(limit).exec();
+  const filmsB = await modelB.find(query).skip(skip).limit(limit).exec();
+  return [...filmsA, ...filmsB];
+}
 
 module.exports.gener = async (req, res) => {
   try {
-    let key = req.params.key;
-    let a = req.params.num;
-    let page = parseInt(a);
-    let theloai = {
+    const key = req.params.key;
+    const page = parseInt(req.params.num) || 1;
+    const PAGE_SIZE = 20;
+
+    const theloai = {
       "hanh-dong": "Hành Động",
       "tinh-cam": "Tình Cảm",
       "hai-huoc": "Hài Hước",
@@ -58,49 +42,81 @@ module.exports.gener = async (req, res) => {
       "kinh-di": "Kinh Dị",
       "hinh-su": "Hình Sự",
       "the-thao": "Thể Thao",
-      "hoc-duong": "Học Đường",
       "chieu-rap": "Chiếu Rạp",
       "gia-dinh": "Gia Đình",
       "bi-an": "Bí Ẩn",
     };
-    let filml, filmb, film, leng;
-    if (theloai[key] === "Chiếu Rạp") {
-      filml = await taomang(PhimLe, { chieurap: true });
-      film = [...(filml[page] || []), ...(filml[page + 1] || [])];
-      leng = filml.length;
-    } else {
-      filml = await taomang(PhimLe, { category: theloai[key] });
-      filmb = await taomang(PhimBo, { category: theloai[key] });
-      if (!filml[page] || filml[page].length < 9) {
-        film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
-      } else if (!filmb[page] || filmb[page].length < 9) {
-        film = [...(filml[page] || []), ...(filml[page + 1] || [])];
-      } else {
-        film = [...(filmb[page] || []), ...(filml[page] || [])];
-      }
-      leng = Math.max(filmb.length, filml.length);
+
+    const categoryName = theloai[key];
+    if (!categoryName) return res.status(404).send("Thể loại không hợp lệ");
+
+    // 🧠 Check cache
+    const cacheKey = `category-${key}-page-${page}`;
+    const cachedData = cache.get(cacheKey);
+    if (cachedData) {
+      console.log("📦 Trả dữ liệu từ cache:", cacheKey);
+      return res.render("client/pages/search/search", {
+        film: cachedData.film,
+        name: categoryName,
+        leng: cachedData.leng,
+        user: req.session.user,
+        cached: true, // bạn có thể dùng để debug
+      });
     }
 
-    if (page > leng) {
-      return res.status(500).send("Không tìm thấy phim");
+    let film = [];
+    let total = 0;
+
+    if (categoryName === "Chiếu Rạp") {
+      film = await getProductsPaginated(
+        PhimLe,
+        { chieurap: true },
+        page,
+        PAGE_SIZE
+      );
+      total = await countProducts(PhimLe, { chieurap: true });
+    } else {
+      console.log("Lấy phim theo thể loại:", categoryName);
+      film = await getCombinedFilms(
+        PhimLe,
+        PhimBo,
+        { category: categoryName },
+        page,
+        PAGE_SIZE
+      );
+      const countLe = await PhimLe.find({ category: categoryName });
+      const countBo = await PhimBo.find({ category: categoryName });
+      total = Math.max(countLe.length, countBo.length);
     }
-    let name = theloai[key];
+
+    if (!film.length) {
+      return res.status(404).send("Không tìm thấy phim");
+    }
+
+    const leng = Math.ceil(total / PAGE_SIZE) + 1;
+    // console.log(total, PAGE_SIZE, leng);
+
+    // 💾 Save to cache
+    cache.set(cacheKey, { film, leng });
+
     res.render("client/pages/search/search", {
-      film, // vì film là mảng, lấy phần tử đầu tiên
-      name,
+      film,
+      name: categoryName,
       leng,
       user: req.session.user,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).send("Lỗi server");
   }
 };
+
 module.exports.country = async (req, res) => {
   try {
     let key = req.params.country;
     let a = req.params.num;
     let page = parseInt(a);
-    let name;
+    let PAGE_SIZE = 20;
     let countries = {
       "trung-quoc": "Trung Quốc",
       "viet-nam": "Việt Nam",
@@ -108,47 +124,46 @@ module.exports.country = async (req, res) => {
       "nhat-ban": "Nhật Bản",
       "thai-lan": "Thái Lan",
       "au-mi": "Âu Mỹ",
+      "tong-hop": "Tổng Hợp",
     };
-    if (key === "tong-hop") {
-      let filmb = await taomang(PhimBo, {});
-      let filml = await taomang(PhimLe, {});
-      let film;
-      if (!filml[page] || filml[page].length < 9) {
-        film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
-      } else if (!filmb[page] || filmb[page].length < 9) {
-        film = [...(filml[page] || []), ...(filml[page + 1] || [])];
-      } else {
-        film = [...(filmb[page] || []), ...(filml[page] || [])];
-      }
-      let leng = filmb.length > filml.length ? filmb.length : filml.length;
-      if (filmb.length == 0 || filml.length == 0) {
-        return res.status(500).send("Không tìm thấy phim");
-      }
-      name = "TỔNG HỢP";
-      res.render("client/pages/search/search", {
-        film, // vì film là mảng, lấy phần tử đầu tiên,
-        name,
-        leng,
+
+    let total = 0;
+    let film = [];
+    let name = countries[key];
+
+    // 🧠 Check cache
+    const cacheKey = `country-${key}-page-${page}`;
+    const cachedData = cache.get(cacheKey);
+    if (cachedData) {
+      console.log("📦 Trả dữ liệu từ cache:", cacheKey);
+      return res.render("client/pages/search/search", {
+        film: cachedData.film,
+        name: cachedData.name,
+        leng: cachedData.leng,
         user: req.session.user,
       });
-      return;
     }
-    let filmb = await taomang(PhimBo, { country: countries[key] });
-    let filml = await taomang(PhimLe, { country: countries[key] });
-    let film;
 
-    if (!filml[page] || filml[page].length < 9) {
-      film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
-    } else if (!filmb[page] || filmb[page].length < 9) {
-      film = [...(filml[page] || []), ...(filml[page + 1] || [])];
+    if (name === "Tổng Hợp") {
+      film = await getCombinedFilms(PhimLe, PhimBo, {}, page, PAGE_SIZE);
+      total =
+        (await countProducts(PhimLe, {})) + (await countProducts(PhimBo, {}));
     } else {
-      film = [...(filmb[page] || []), ...(filml[page] || [])];
+      film = await getCombinedFilms(
+        PhimLe,
+        PhimBo,
+        { country: name },
+        page,
+        PAGE_SIZE
+      );
+      const countLe = await PhimLe.find({ country: name });
+      const countBo = await PhimBo.find({ country: name });
+      total = Math.max(countLe.length, countBo.length);
     }
-    let leng = filmb.length > filml.length ? filmb.length : filml.length;
-    if (filmb.length == 0 || filml.length == 0) {
-      return res.status(500).send("Không tìm thấy phim");
-    }
-    name = countries[key];
+
+    // 💾 Save to cache
+    let leng = Math.ceil(total / PAGE_SIZE) + 1;
+    cache.set(cacheKey, { film, leng });
     res.render("client/pages/search/search", {
       film, // vì film là mảng, lấy phần tử đầu tiên
       name,
@@ -165,51 +180,52 @@ module.exports.year = async (req, res) => {
     let s1 = parseInt(key);
     let num = req.params.num;
     let page = parseInt(num);
+    let PAGE_SIZE = 20;
+    let total = 0;
+    let name;
     if (isNaN(s1)) {
       return res.status(404).send("Không tìm thấy phim");
     }
+    let film = [];
+
+    const cacheKey = `year-${s1}-page-${page}`;
+    const cachedData = cache.get(cacheKey);
+    if (cachedData) {
+      console.log("📦 Trả dữ liệu từ cache:", cacheKey);
+      return res.render("client/pages/search/search", {
+        film: cachedData.film,
+        name: cachedData.name,
+        leng: cachedData.leng,
+        user: req.session.user,
+        cached: true, // bạn có thể dùng để debug
+      });
+    }
 
     if (s1 === 2007) {
-      let filmb = await taomang(PhimBo, { year: s1 });
-      let filml = await taomang(PhimLe, { year: s1 });
-      let film;
+      film = await getCombinedFilms(
+        PhimLe,
+        PhimBo,
+        { year: s1 },
+        page,
+        PAGE_SIZE
+      );
 
-      if (!filml[page] || filml[page].length < 9) {
-        film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
-      } else if (!filmb[page] || filmb[page].length < 9) {
-        film = [...(filml[page] || []), ...(filml[page + 1] || [])];
-      } else {
-        film = [...(filmb[page] || []), ...(filml[page] || [])];
-      }
-      let leng = filmb.length > filml.length ? filmb.length : filml.length;
-      if (filmb.length == 0 || filml.length == 0) {
-        return res.status(500).send("Không tìm thấy phim");
-      }
-      let name = "Sau 2007";
-      res.render("client/pages/search/search", {
-        film,
-        name,
-        leng,
-        user: req.session.user,
-      });
-      return;
-    }
-    let filmb = await taomang(PhimBo, { year: s1 });
-    let filml = await taomang(PhimLe, { year: s1 });
-    let film;
-
-    if (!filml[page] || filml[page].length < 9) {
-      film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
-    } else if (!filmb[page] || filmb[page].length < 9) {
-      film = [...(filml[page] || []), ...(filml[page + 1] || [])];
+      name = "Sau 2007";
     } else {
-      film = [...(filmb[page] || []), ...(filml[page] || [])];
+      film = await getCombinedFilms(
+        PhimLe,
+        PhimBo,
+        { year: s1 },
+        page,
+        PAGE_SIZE
+      );
+      name = "Năm " + s1;
     }
-    let leng = filmb.length > filml.length ? filmb.length : filml.length;
-    if (filmb.length == 0 || filml.length == 0) {
-      return res.status(500).send("Không tìm thấy phim");
-    }
-    let name = "Năm " + s1;
+
+    let file = await countProducts(PhimLe, { year: s1 });
+    let fibo = await countProducts(PhimBo, { year: s1 });
+    let leng = Math.ceil(Math.max(file, fibo) / PAGE_SIZE) + 1;
+    cache.set(cacheKey, { film, name, leng });
     res.render("client/pages/search/search", {
       film,
       name,
@@ -225,19 +241,30 @@ module.exports.phim = async (req, res) => {
   try {
     let id = req.params.id;
     let page = parseInt(req.params.num);
-    let film, name, leng, filml, filmb;
+    let PAGE_SIZE = 20;
+    if (isNaN(page)) {
+      return res.status(404).send("Không tìm thấy phim");
+    }
+    let film = [];
+    let leng = 0;
+    let name, filml, filmb;
 
     if (id === "phimle") {
-      filml = await taomang(PhimLe, {});
-      film = [...(filml[page] || []), ...(filml[page + 1] || [])];
+      let file = await countProducts(PhimLe, {});
+      // console.log(file);
+
+      film = await getProductsPaginated(PhimLe, {}, page, PAGE_SIZE);
       name = "Lẻ";
-      leng = filml.length;
+      leng = file;
     } else if (id === "phimbo") {
-      filmb = await taomang(PhimBo, {});
-      film = [...(filmb[page] || []), ...(filmb[page + 1] || [])];
+      let fibo = await countProducts(PhimBo, {});
+      film = await getProductsPaginated(PhimBo, {}, page, PAGE_SIZE);
       name = "Bộ";
-      leng = filmb.length;
+      leng = fibo;
     }
+
+    leng = Math.ceil(leng / PAGE_SIZE) + 1;
+    console.log(leng);
 
     res.render("client/pages/search/search", {
       film,

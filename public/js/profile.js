@@ -1,5 +1,6 @@
+// let socket = io();
+
 let url = "";
-let slug = window.location.pathname.split("/").pop();
 
 console.log(profiles);
 let avainput = document.querySelector("#avatar-input");
@@ -42,13 +43,13 @@ async function saveInfo() {
   const data = {};
 
   for (let key in fields) {
-    const value = document.getElementById(fields[key]).value;
+    const value = document.getElementById(fields[key]).value.trim();
     data[key] = value;
     const displaySelector =
       key === "bio"
         ? "#bio"
         : `#${key} .about-${key === "work" ? "linkfb" : key}`;
-    document.querySelector(displaySelector).innerText = value;
+    document.querySelector(displaySelector).innerText = value || "";
   }
 
   try {
@@ -143,51 +144,163 @@ function cancelAvatar() {
   document.getElementById("avatar-input").value = "";
 }
 
-// Hàm check kết bạn
 let a = document.querySelector(".profile-info");
-console.log(a);
+
 async function checkfriend() {
   try {
-    let response = await fetch(
+    const response = await fetch(
       `/checkfriend?user_email=${user.email}&friend_email=${profiles.email}`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
-    if (!response.ok) console.log("Lỗi khi kiểm tra kết bạn");
-    let data = await response.json();
-    console.log(data.status || "Chưa kết bạn");
+
+    if (!response.ok) {
+      console.log("Lỗi khi kiểm tra kết bạn");
+      return;
+    }
+
+    const data = await response.json();
+    // console.log(data);
+
+    const oldBtns = document.querySelector(".buttons");
+    if (oldBtns) oldBtns.remove();
+
+    const div = document.createElement("div");
+    div.classList.add("buttons");
+
     if (data.status) {
-      let div = document.createElement("div");
-      div.classList.add("buttons");
+      // Đã là bạn bè
       div.innerHTML = `
-        <button class="remove-friend"> Hủy kết bạn </button>
-        <button class="send-message"> &#x1F4AC; Nhắn tin </button>
+        <button id="remove-friend">Hủy kết bạn</button>
+        <button class="send-message">💬 Nhắn tin</button>
       `;
       a.appendChild(div);
+
+      document.querySelector(".send-message").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = `/message/${profiles.email}`;
+      });
+
       document
-        .querySelectorAll(".buttons button")[1]
-        .addEventListener("click", (e) => {
+        .getElementById("remove-friend")
+        .addEventListener("click", async (e) => {
           e.preventDefault();
-          window.location.href = `/message/${profiles.email}`;
+          await fetch(`/deleteFriends`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_email: user.email,
+              friend_email: profiles.email,
+            }),
+          });
+          checkfriend();
         });
-    } else if (user.email === slug) {
-      let div = document.createElement("div");
-      div.classList.add("buttons");
-      div.innerHTML = `
-        // <button class="add-friend"> Kết bạn </button>
-      `;
-      // a.appendChild(div);
-    } else {
-      let div = document.createElement("div");
-      div.classList.add("buttons");
-      div.innerHTML = `
-        <button class="add-friend"> Kết bạn </button>
-      `;
-      a.appendChild(div);
+    } else if (user.email !== profiles.email) {
+      // ✨ Kiểm tra xem có lời mời đến không (từ người kia)
+      const pendingRes = await fetch(
+        `/checkpendingreceived?user_email=${user.email}&friend_email=${profiles.email}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const pendingReceived = await pendingRes.json();
+
+      if (pendingReceived.status) {
+        // 📥 Đang chờ xác nhận (người nhận)
+        div.innerHTML = `
+          <button id="accept-request">Chấp nhận</button>
+          <button id="decline-request">Từ chối</button>
+        `;
+        a.appendChild(div);
+
+        document
+          .getElementById("accept-request")
+          .addEventListener("click", async () => {
+            await fetch(`/acceptFriends`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_email: user.email,
+                friend_email: profiles.email,
+              }),
+            });
+
+            checkfriend();
+          });
+
+        document
+          .getElementById("decline-request")
+          .addEventListener("click", async () => {
+            await fetch(`/deleteFriends`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_email: user.email,
+                friend_email: profiles.email,
+              }),
+            });
+            checkfriend();
+          });
+      } else {
+        // 🟡 Kiểm tra xem mình có gửi lời mời không
+        const sentReq = await fetch(
+          `/checkpending?user_email=${user.email}&friend_email=${profiles.email}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        const pendingData = await sentReq.json();
+
+        if (pendingData.status) {
+          // 🕒 Đã gửi lời mời
+          div.innerHTML = `<button id="cancel-request">Hủy lời mời</button>`;
+          a.appendChild(div);
+
+          document
+            .getElementById("cancel-request")
+            .addEventListener("click", async () => {
+              await fetch(`/deleteFriends`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  user_email: user.email,
+                  friend_email: profiles.email,
+                }),
+              });
+              checkfriend();
+            });
+        } else {
+          // ➕ Chưa có gì
+          div.innerHTML = `<button id="add-friend">Kết bạn</button>`;
+          a.appendChild(div);
+
+          document
+            .getElementById("add-friend")
+            .addEventListener("click", async () => {
+              await fetch(`/addFriends`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  user_email: user.email,
+                  friend_email: profiles.email,
+                }),
+              });
+              socket.emit("add-friend", {
+                from: user.email,
+                to: profiles.email,
+                name: user.name,
+                avatar: user.avatar,
+              });
+              checkfriend();
+            });
+        }
+      }
     }
   } catch (err) {
     console.error("Lỗi khi kiểm tra kết bạn:", err);
@@ -195,3 +308,112 @@ async function checkfriend() {
 }
 
 checkfriend();
+
+// Hiển thị Post
+document.getElementById("tab-posts").addEventListener("click", function (e) {
+  e.preventDefault();
+  // Ẩn phần danh sách bạn bè
+  document.getElementById("friends-list").style.display = "none";
+  document.getElementById("friends-list2").style.display = "none";
+  // Hiện các phần profile info và details
+  document.querySelector(".profile-details").style.display = "block";
+
+  // Đổi đường dẫn URL mà không reload
+  history.pushState(null, "", `/profile/${profiles.email}`);
+});
+
+// Hàm render friends
+let renderFriends = async () => {
+  try {
+    let response = await fetch(`/getFriends?email=${profiles.email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) return;
+    let data = await response.json();
+    console.log(data);
+    let a = document.querySelector("#friends-list .danhsach");
+    a.innerHTML = "";
+    for (let friend of data) {
+      let div = document.createElement("div");
+      div.classList.add("friend");
+      div.innerHTML = `
+        <a href="/profile/${friend.email}"></a>
+        <img src="${friend.url_image}" alt="Friend" />
+        <p>${friend.username}</p>
+      `;
+      a.appendChild(div);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// Hiển danh sách bằn bè
+document
+  .getElementById("tab-friends")
+  .addEventListener("click", async function (e) {
+    e.preventDefault();
+    await renderFriends();
+    // console.log(a);
+    // Ẩn các phần profile info và details
+    document.querySelector(".profile-details").style.display = "none";
+    document.getElementById("friends-list2").style.display = "none";
+
+    // Hiện phần danh sách bạn bè
+    document.getElementById("friends-list").style.display = "block";
+
+    // Đổi đường dẫn URL mà không reload
+    // Kĩ thuật SPA
+    history.pushState(null, "", `/profile/${profiles.email}/ban-be`);
+  });
+
+window.onpopstate = function (event) {
+  // Xử lý hiển thị lại nội dung phù hợp theo URL
+  const path = window.location.pathname;
+
+  if (path === `/profile/${profiles.email}/ban-be`) {
+    document.querySelector(".profile-details").style.display = "none";
+    document.getElementById("friends-list").style.display = "block";
+  } else if (path === `/profile/${profiles.email}/ket-noi`) {
+    document.querySelector(".profile-details").style.display = "none";
+    document.getElementById("friends-list").style.display = "none";
+    document.getElementById("friends-list2").style.display = "block";
+  } else {
+    document.querySelector(".profile-details").style.display = "block";
+    document.getElementById("friends-list").style.display = "none";
+  }
+};
+
+// Hàm render bạn connect
+let renderConnect = () => {
+  let a = document.querySelector("#friends-list2 .danhsach");
+  a.innerHTML = "";
+  for (let friend of moreFriend) {
+    let div = document.createElement("div");
+    div.classList.add("friend");
+    div.innerHTML = `
+        <a href="/profile/${friend.email}"></a>
+        <img style="width: 150px; height: 150px;" src="${friend.url_image}" alt="Friend" />
+        <p>${friend.username}</p>
+        <button>Kết bạn</button>
+      `;
+    a.appendChild(div);
+  }
+};
+
+// Xử lí Kết nối bạn bè
+console.log(moreFriend);
+document.getElementById("tab-connect").addEventListener("click", function (e) {
+  e.preventDefault();
+  renderConnect();
+  document.querySelector(".profile-details").style.display = "none";
+  document.getElementById("friends-list").style.display = "none";
+  document.getElementById("friends-list2").style.display = "block";
+
+  history.pushState(null, "", `/profile/${profiles.email}/ket-noi`);
+});
+
+// renderConnect();

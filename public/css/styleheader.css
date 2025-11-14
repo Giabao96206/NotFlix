@@ -14,7 +14,7 @@
 #intro .about-intro {
   width: 100%;
   height: 100%;
-  background-image: url(../Component/image/tải\ xuống.webp);
+  background-image: url(../imgage/tải\ xuống.webp);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -708,7 +708,7 @@
   text-transform: uppercase;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 15px;
+
   padding: 16px 0;
   color: #a5cbef;
   background: #ff8a00;
@@ -1196,12 +1196,6 @@
   border-top-right-radius: 15px;
 }
 
-#header #nav .nav2 .about-user .more-option li:nth-child(4) {
-  border-radius: 0;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
 #header #nav .nav2 .about-user .more-option li {
   list-style-type: none;
   width: 100%;
@@ -1223,7 +1217,10 @@
   opacity: 1;
   transform: translateY(0);
 }
-
+#header #nav .nav2 .about-user .more-option li.logout {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
 #header #nav .nav2 .about-user .more-option li a {
   text-decoration: none;
   color: black;
@@ -1246,4 +1243,125 @@
 
 #header #nav .nav2 .about-user .btn-close:hover {
   background-color: rgb(225, 228, 234);
+}
+
+/* notification */
+#header #nav .nav2 .notification {
+  position: relative;
+}
+
+#header #nav .nav2 .notification i {
+  color: white;
+  padding: 5px;
+  margin-left: 16px;
+  background-color: rgb(37, 39, 40);
+  border-radius: 20px;
+}
+
+#header #nav .nav2 .notification i:hover {
+  background-color: #ccc;
+}
+
+#header #nav .nav2 .notification .more-notification {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  position: absolute;
+  top: 40px;
+  width: 280px;
+  z-index: 991;
+  margin-right: 4px;
+  min-height: 300px;
+  max-height: 500px;
+  max-width: calc(-8px + 100vw);
+  background-color: rgb(37, 39, 40);
+  border-radius: 10px;
+  right: -30px;
+  display: none;
+}
+
+#header #nav .nav2 .notification .more-notification .add {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#header #nav .nav2 .notification .more-notification .add:has(button:hover) {
+  background-color: rgb(37, 39, 40);
+}
+#header #nav .nav2 .notification .more-notification .add:hover {
+  background-color: rgb(59, 61, 62);
+}
+
+#header #nav .nav2 .notification .more-notification .add .img-friend {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  /* align-items: center; */
+}
+
+#header #nav .nav2 .notification .more-notification .add .img-friend img {
+  width: 100%;
+  height: 50%;
+  border-radius: 50%;
+}
+
+#header #nav .nav2 .notification .more-notification .add .name-friend {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  font-size: 15px;
+  flex-direction: column;
+  padding-left: 10px;
+  color: white;
+}
+
+#header #nav .nav2 .notification .more-notification .add .name-friend .accept {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: rgb(33, 118, 240);
+  margin-top: 10px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  margin-right: 6px;
+  z-index: 6;
+}
+
+#header
+  #nav
+  .nav2
+  .notification
+  .more-notification
+  .add
+  .name-friend
+  .accept:hover {
+  background-color: rgb(33, 118, 255);
+}
+
+#header #nav .nav2 .notification .more-notification .add .name-friend .decline {
+  padding: 9px;
+
+  border-radius: 5px;
+  background-color: rgba(79, 81, 81, 0.4);
+  margin-top: 10px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  border: none;
+  z-index: 6;
+}
+
+#header
+  #nav
+  .nav2
+  .notification
+  .more-notification
+  .add
+  .name-friend
+  .decline:hover {
+  background-color: rgba(79, 81, 81, 1);
 }

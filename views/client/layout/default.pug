@@ -1,9 +1,15 @@
-document
-html
-   head
-       title #{titlePage}
-       link(rel="stylesheet", href="../../../css/style.css")
-   body
-      block header
-      block content
-      block footer
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    // ... meta, css
+    script(src="/socket.io/socket.io.js")
+    block headExtra
+
+  body
+    block header
+    block content
+    block footer
+
+    block scripts

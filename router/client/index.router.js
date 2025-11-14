@@ -10,6 +10,11 @@ const signprouter = require("./signup.routerr");
 const upfrofile = require("./profile.router");
 const messageRouter = require("./message.router");
 const callmess = require("./message.call.router");
+const tuphim = require("./tuphim.router");
+const adminmain = require("./trangchu.admin.router");
+const quantripeople = require("./quantripeople.admin.router");
+const quantriphim = require("./quantriphim.admin.router");
+
 module.exports = (app) => {
   // app.use("/", homeRouter);
   app.use("/signup", signprouter);
@@ -23,6 +28,10 @@ module.exports = (app) => {
   app.use("/profile", upfrofile);
   app.use("/message", messageRouter);
   app.use("/callmess", callmess);
+  app.use("/me/tuphim", tuphim);
+  app.use("/admin", adminmain);
+  app.use("/admin/users", quantripeople);
+  app.use("/admin/films", quantriphim);
   app.use((req, res, next) => {
     res.setTimeout(5000, () => {
       // timeout sau 10 giây

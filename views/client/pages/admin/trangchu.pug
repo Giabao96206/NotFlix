@@ -1,0 +1,131 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(
+      content="width=device-width, initial-scale=1.0" 
+      name="viewport"
+      )
+    title Admin Dashboard
+    script(src="https://cdn.tailwindcss.com")
+    script(src="https://cdn.jsdelivr.net/npm/chart.js")
+    script(src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1")
+  body.bg-gray-100.min-h-screen.flex
+    // Sidebar
+    aside.w-64.bg-white.shadow-md.hidden(class="md:block")
+      .p-6.font-bold.text-xl.border-b
+      a(href="/country/trung-quoc/page-1").text-3xl.font-bold.text-blue-600 Quản trị
+      nav.mt-4
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin"
+          ) Trang chủ
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/users"
+          ) Quản lí người dùng
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="/admin/films"
+          ) Phim
+        a.block.px-6.py-2.text-gray-700(
+          class="hover:bg-gray-100" 
+          href="#"
+          ) Cài đặt
+    // Main content
+    .flex-1.flex.flex-col
+      // Navbar
+      header.bg-white.shadow-md.p-4.flex.justify-between.items-center
+        .text-lg.font-semibold Admin Panel
+        .text-sm.text-gray-600.flex.items-center
+          p Xin chào, Admin
+          .w-10.h-10.ml-2
+            img.w-full.h-full.object-cover.rounded-full(
+              alt="" 
+              src="./Component/image/background1.jpg"
+              )
+      // Content
+      main.p-6.space-y-6
+        // Header with clock
+        .flex.items-center.justify-between.bg-white.p-4.shadow(class="rounded-[10px]")
+          p.text-2xl.font-bold Bảng điều khiển
+          p#clock.text-sm.text-gray-600
+        // Thẻ thống kê
+        .grid.grid-cols-1.gap-4(class="sm:grid-cols-1 lg:grid-cols-2")
+          .bg-green-100.p-4.rounded.shadow
+            p.text-red-600.font-bold TỔNG KHÁCH HÀNG
+            p.text-xl.font-bold #{users} khách hàng
+            p.text-sm.text-gray-600.mt-1 Tổng số khách hàng được quản lý.
+          .bg-red-100.p-4.rounded.shadow
+            p.text-red-600.font-bold TỔNG SÁN PHÂM
+            p.text-xl.font-bold #{film} phim
+            p.text-sm.text-gray-600.mt-1 Sản phẩm cần nhập thêm.
+          .bg-white.p-6.rounded.shadow.col-span-2(class="lg:col-span-2")
+            label.block.mb-2.text-sm.font-medium.text-gray-700(for="month") Năm
+            select#year.inline-block.w-full.px-3.py-2.text-base.text-gray-700.transition.duration-150.ease-in-out.bg-white.border.border-gray-300.rounded-md.shadow-sm(class="focus:outline-none focus:ring-blue-500 focus:border-blue-500")
+              option(value="2010") 2010
+              option(value="2011") 2011
+              option(value="2012") 2012
+              option(value="2013") 2013
+              option(value="2014") 2014
+              option(value="2015") 2015
+              option(value="2016") 2016
+              option(value="2017") 2017
+              option(value="2018") 2018
+              option(value="2019") 2019
+              option(value="2020") 2020
+              option(value="2021") 2021
+              option(value="2022") 2022
+              option(value="2023") 2023
+              option(value="2024") 2024
+              option(value="2025") 2025
+            canvas#myBarChart
+          // Biểu đồ
+          .bg-white.p-6.rounded.shadow.col-span-2(class="lg:col-span-2")
+            p.text-lg.font-bold.mb-4.border-b.pb-2 Dữ liệu tính từ nằm 2019
+            canvas#myChart.w-full(class="sm:h-auto")
+            button.btn.btn-primary(onclick="window.myChart && window.myChart.resetZoom()") Reset Zoom
+
+        // Bảng tình trạng đơn hàng
+        .bg-white.p-6.rounded.shadow
+          p.text-lg.font-bold.mb-4.border-b.pb-2 Tình trạng đơn hàng
+          .overflow-x-auto
+            table.min-w-full.text-left.text-sm
+              thead
+                tr.bg-gray-100
+                  th.py-2.px-4 ID đơn hàng
+                  th.py-2.px-4 Tên khách hàng
+                  th.py-2.px-4 Tổng tiền
+                  th.py-2.px-4 Trạng thái
+              tbody
+                tr
+                  td.py-2.px-4 AL3947
+                  td.py-2.px-4 Phạm Thị Ngọc
+                  td.py-2.px-4 19.770.000 đ
+                  td.py-2.px-4
+                    span.bg-purple-200.text-purple-800.px-2.py-1.rounded Chờ xử lý
+                tr
+                  td.py-2.px-4 ER3835
+                  td.py-2.px-4 Nguyễn Thị Mỹ Yến
+                  td.py-2.px-4 16.770.000 đ
+                  td.py-2.px-4
+                    span.bg-yellow-200.text-yellow-800.px-2.py-1.rounded Đang vận chuyển
+                tr
+                  td.py-2.px-4 MD0837
+                  td.py-2.px-4 Triệu Thanh Phú
+                  td.py-2.px-4 9.400.000 đ
+                  td.py-2.px-4
+                    span.bg-green-200.text-green-800.px-2.py-1.rounded Đã hoàn thành
+                tr
+                  td.py-2.px-4 MT9835
+                  td.py-2.px-4 Đặng Hoàng Phúc
+                  td.py-2.px-4 40.650.000 đ
+                  td.py-2.px-4
+                    span.bg-red-200.text-red-800.px-2.py-1.rounded Đã hủy
+
+
+script. 
+ let mang =  !{JSON.stringify(mang)};
+ 
+ 
+script(src='../../../../js/admin/trangchu.admin.js')

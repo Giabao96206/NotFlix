@@ -6,13 +6,7 @@ const app = express();
 app.use(express.json()); // Middleware để parse JSON request body
 app.use(cors({ origin: "*" }));
 
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: { encrypt: false, trustServerCertificate: true },
-};
+let config = require("../../../config/AdminDatabase");
 
 // Hàm tạo số ngẫu nhiên 4 chữ số
 function generateRandomFourDigitNumber() {
@@ -114,15 +108,46 @@ let mail = (app) => {
           pass: "qrlc liuk lhxv yows",
         },
       });
-
       let mailOptions = {
         from: "tranvangiabao96206@gmail.com",
         to: email,
         subject: "Mã xác nhận của bạn",
-        text: `Mã xác nhận mật khẩu của bạn là: ${codes} \n
-      Mã này sẽ hết hạn sau 5 phút. \n
-      Vui lòng không chia sẻ mã này với bất kỳ ai. \n
-      Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!!!`,
+        html: `
+          <div
+      style="
+        max-width: 600px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+      "
+    >
+      <div
+        style="
+          background: #0073e6;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+        "
+      >
+        <h1>Mã xác nhận</h1>
+      </div>
+      <div style="padding: 30px 20px; color: #333">
+        <h2>Xin chào, ${email}</h2>
+        <p>
+          Cảm ơn bạn đã tin tưởng sử dùng trang Web của chúng tôi. Dưới đây là
+          thông tin mã xác nhận của bạn:
+        </p>
+      </div>
+      <div
+        style="font-size: 20px; color: #888; text-align: center; padding: 20px"
+      >
+        Vui lòng không chia sẻ mã cho bất kỳ ai: <strong>${codes}</strong>
+      </div>
+    </div>
+
+  `,
       };
 
       let info = await transporter.sendMail(mailOptions);

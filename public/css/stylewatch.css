@@ -1,39 +1,44 @@
+.main-content,
+body {
+  background-color: #1a1a1a;
+}
+#intro .about-intro,
+.main-content .content .container .movie .about1-movie {
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+#intro .about-intro .intro-start a,
+.main-content .content .container .movie .about1-movie .text ul li a {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
+    border 0.3s ease-in-out;
+  background-color: #c70000;
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  background-color: rgb(26, 26, 26);
+  font-family: Poppins, sans-serif;
 }
 html {
   scroll-behavior: smooth;
 }
-
 #intro {
   width: 100%;
   height: 1000px;
 }
-
 #intro .about-intro {
-  width: 100%;
   height: 100%;
   background-image: url(../Component/image/tải\ xuống.webp);
-  background-repeat: no-repeat;
-  background-size: cover;
   background-attachment: fixed;
-  position: relative;
 }
-
 #intro .about-intro .intro-content {
   position: absolute;
   top: 22%;
   width: 100%;
   text-align: center;
 }
-
 #intro .about-intro .intro-content img {
   width: 47%;
   height: 100%;
@@ -45,9 +50,7 @@ html {
   text-align: center;
   top: 70%;
 }
-
 #intro .about-intro .intro-start a {
-  background-color: rgb(199, 0, 0);
   background-image: none;
   font-family: Asap;
   font-weight: 700;
@@ -55,75 +58,52 @@ html {
   font-size: 20px;
   line-height: 1;
   letter-spacing: 1px;
-  color: #ffffff;
-  border-top-width: 2px;
-  border-top-color: #ffffff;
-  border-top-style: solid;
-  border-top-left-radius: 56px;
-  border-top-right-radius: 56px;
-  border-right-width: 2px;
-  border-right-color: #ffffff;
-  border-right-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #ffffff;
-  border-bottom-style: solid;
-  border-bottom-left-radius: 56px;
-  border-bottom-right-radius: 56px;
-  border-left-width: 2px;
-  border-left-color: #ffffff;
-  border-left-style: solid;
-  padding-top: 15px;
-  padding-right: 30px;
-  padding-bottom: 15px;
-  padding-left: 30px;
+  color: #fff;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  border-radius: 56px;
+  border-width: 2px;
+  border-color: #fff;
+  border-left: 2px solid #fff;
+  padding: 15px 30px;
   text-align: center;
-  box-shadow: 0px 14px 28px 0px rgba(0, 0, 0, 0.16);
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
-    border 0.3s ease-in-out;
+  box-shadow: 0 14px 28px 0 rgba(0, 0, 0, 0.16);
 }
-
-#intro .about-intro .intro-start:hover a {
-  background-color: white;
+#intro .about-intro .intro-start:hover a,
+.main-content .content .container .movie .about1-movie .text ul li a:hover {
+  background-color: #fff;
   color: red;
   border: 2px solid red;
 }
-
 .help1 {
   display: flex;
   align-items: center;
   height: 100%;
 }
-
 .main-content {
   width: 100%;
-
   padding-top: 73px;
-  background-color: rgb(26, 26, 26);
 }
-
 .main-content .content {
   width: 100%;
   height: 100%;
 }
-
 .main-content .content .container {
   height: 100%;
 }
-
 .main-content .content .container .movie {
   width: 100%;
   height: 100%;
   position: relative;
 }
-
 .main-content .content .container .movie .nothing {
   margin-top: 35px;
-  background-color: rgb(37, 37, 37);
+  background-color: #252525;
   width: 100%;
   height: 30px;
   border-radius: 4px;
 }
-
 .main-content .content .container .movie .nothing ul {
   display: flex;
   height: 100%;
@@ -134,29 +114,22 @@ html {
   display: flex;
   align-items: center;
   height: 100%;
-  color: rgb(199, 0, 0);
+  color: #c70000;
 }
 .main-content .content .container .movie .nothing ul li a {
   text-decoration: none;
-  color: rgb(199, 0, 0);
+  color: #c70000;
   padding: 0 5px;
 }
-
 .main-content .content .container .movie .nothing ul .ti-home {
   display: inline-block;
   line-height: 25px;
   height: 100%;
 }
-
 .main-content .content .container .movie .about1-movie {
-  width: 100%;
   height: auto;
-  background-size: cover;
-  position: relative;
-  background-repeat: no-repeat;
   padding-top: 50%;
 }
-
 .main-content .content .container .movie .about1-movie img {
   position: absolute;
   width: 250px;
@@ -166,25 +139,21 @@ html {
   bottom: 10px;
   left: 10px;
 }
-
 .main-content .content .container .movie .about1-movie .text {
   position: absolute;
   bottom: 20px;
   left: 285px;
-  color: white;
+  color: #fff;
 }
-
 .main-content .content .container .movie .about1-movie .text h1 {
   font-weight: 500;
   margin-bottom: 10px;
 }
-
 .main-content .content .container .movie .about1-movie .text p {
   font-size: 15px;
   font-weight: 400;
   margin-bottom: 20px;
 }
-
 .main-content .content .container .movie .about1-movie .text ul {
   list-style: none;
   padding: 0;
@@ -202,89 +171,64 @@ html {
   text-decoration: none;
   font-weight: 500;
   padding: 8px 16px;
-  background-color: rgb(199, 0, 0);
   border-radius: 5px;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
-    border 0.3s ease-in-out;
-  border: 2px solid rgb(199, 0, 0);
+  border: 2px solid #c70000;
 }
-.main-content .content .container .movie .about1-movie .text ul li a:hover {
-  background-color: white;
-  color: red;
-  border: 2px solid red;
-}
-
 .main-content .content .container .movie .about1-movie .text ul li a i {
   margin-right: 5px;
   font-size: 15px;
 }
-
-/* Danh sách tập phim */
 .main-content .content .container .episode {
   margin-top: 10px;
   width: 100%;
-
-  background-color: rgb(37, 37, 37);
+  background-color: #252525;
 }
-
 .main-content .content .container .episode p {
-  color: white;
+  color: #fff;
   border-bottom: 1px solid #ccc;
   font-weight: 200;
   text-align: center;
   font-size: 20px;
   padding: 20px 0;
+  line-height: 25px;
 }
 .main-content .content .container .episode ul {
-  /* margin-left: 10px; */
   max-height: 300px;
   overflow-y: auto;
   scrollbar-width: thin;
   display: flex;
   list-style: none;
-  /* height: 100px; */
   gap: 20px;
   padding: 8px 16px;
   flex-wrap: wrap;
   align-items: center;
 }
-
 .main-content .content .container .episode ul li {
   font-size: 14px;
 }
 .main-content .content .container .episode ul li a {
   text-decoration: none;
-  color: white;
+  color: #fff;
   padding: 8px 5px;
-  background-color: rgb(58, 58, 58);
+  background-color: #3a3a3a;
   border-radius: 5px;
   display: inline-block;
   width: 83px;
   transition: background-color 0.3s ease-in-out;
 }
-
-.main-content .content .container .episode ul li a:hover {
-  background-color: rgb(199, 0, 0);
-}
-
-.main-content .content .container .episode p {
-  line-height: 25px;
+.main-content .content .container .episode ul li a:hover,
+.main-content .content .container .more-movie .social .sharelike a:hover {
+  background-color: #c70000;
 }
 .main-content .content .container .more-movie {
   margin-top: 10px;
   padding: 10px;
   width: 100%;
   margin-bottom: 20px;
-  background-color: rgb(37, 37, 37);
-
+  background-color: #252525;
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 1s ease, transform 0.3s ease;
-}
-
-.main-content .content .container .showes2 {
-  opacity: 1;
-  transform: translateY(0);
+  transition: opacity 1s, transform 0.3s;
 }
 .main-content .content .container .more-movie .social {
   margin: 10px 0;
@@ -295,53 +239,44 @@ html {
   margin: 10px 0;
   font-weight: 500;
 }
-
 .main-content .content .container .more-movie .social .sharelike a {
   margin-right: 5px;
   text-decoration: none;
-  color: white;
-  padding: 5px 10px;
-  background-color: blue;
+  color: #fff;
+  padding: 10px;
+  background-color: red;
   border-radius: 5px;
-}
-
-.main-content .content .container .more-movie .social .sharelike .ti-facebook {
-  font-size: 12px;
+  transition: background-color 0.3s ease-in-out;
 }
 .main-content .content .container .more-movie .social .vote {
   font-size: 14px;
-  color: white;
+  color: #fff;
   margin-top: 13px;
 }
-
 .main-content .content .container .more-movie .social .vote p {
   display: inline-block;
 }
-
 .main-content .content .container .more-movie .info-movie ul {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   border-bottom: 1px solid #ccc;
 }
-
 .main-content .content .container .more-movie .info-movie ul li {
   list-style-type: none;
   margin: 5px 0;
   padding: 5px;
   font-size: 14px;
-  color: white;
+  color: #fff;
   font-weight: 400;
   width: 33.33%;
 }
-
 .main-content .content .container .more-movie .info-movie ul li a {
   text-decoration: none;
   color: #828282;
 }
-
 .main-content .content .container .more-movie .info-movie ul li a:hover {
-  color: white;
+  color: #fff;
   transition: 0.4s;
 }
 .main-content .content .container .more-movie .info-movie ul li span {
@@ -350,29 +285,25 @@ html {
   font-size: 14px;
   letter-spacing: 0.5px;
 }
-
 .main-content .content .container .content-film h2 {
-  color: rgb(199, 0, 0);
+  color: #c70000;
   padding: 10px 0;
 }
 .main-content .content .container .content-film {
   border-bottom: 1px solid #ccc;
 }
-
 .main-content .content .container .content-film .content {
   color: #828282;
   scrollbar-width: none;
   overflow-y: scroll;
   font-size: 15px;
   max-height: 200px;
-
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 10; /* Số dòng hiển thị */
+  -webkit-line-clamp: 10;
   margin-bottom: 10px;
 }
-
 .main-content .content .container .comment-fb {
   width: 100%;
   border-bottom: 1px solid #ccc;
@@ -380,26 +311,21 @@ html {
   margin-bottom: 20px;
   opacity: 0;
   transform: translateY(-50px);
-  transition: opacity 1s ease, transform 0.3s ease;
-}
-.main-content .content .container .showes2 {
-  opacity: 1;
-  transform: translateY(0);
+  transition: opacity 1s, transform 0.3s;
+  background-color: #fff;
 }
 .main-content .content .container .section1 {
   width: 100%;
   height: auto;
   opacity: 0;
   transform: translateY(-100px);
-  transition: opacity 1s ease, transform 0.3s ease;
+  transition: opacity 1s, transform 0.3s;
   margin-bottom: 10px;
 }
-
 .main-content .content .container .showes2 {
   opacity: 1;
   transform: translateY(0);
 }
-
 .main-content .content .container .section1-heading h2 {
   font-size: 25px;
   font-weight: 700;
@@ -412,7 +338,6 @@ html {
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;
 }
-
 .main-content .content .container .section1-film {
   display: flex;
   overflow-y: hidden;
@@ -427,12 +352,11 @@ html {
   height: 100%;
   width: 160px;
   flex: 0 0 auto;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s, opacity 0.3s;
   opacity: 0.3;
   transform: scale(0.9);
   scroll-snap-align: start;
 }
-
 .main-content .content .container .section1-film-container .film-container {
   width: 100%;
   height: 225px;
@@ -460,14 +384,13 @@ html {
   position: absolute;
   top: 0;
   left: 0;
-
   padding: 8px 16px;
   font-size: 10px;
-  color: white;
+  color: #fff;
   border-radius: 8px;
   background-image: linear-gradient(
     to right,
-    #c02425 0%,
+    #c02425 0,
     #f0cb35 51%,
     #c02425 100%
   );
@@ -484,15 +407,13 @@ html {
   width: 100%;
   padding: 13px 10px;
   background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  text-overflow: inherit;
+  color: #fff;
   display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: center;
   overflow: hidden;
 }
-
 .main-content
   .content
   .container
@@ -511,7 +432,6 @@ html {
   opacity: 0;
   transform: scale(2);
 }
-
 .main-content
   .content
   .container
@@ -519,7 +439,7 @@ html {
   .film-container
   .icon-pause
   span {
-  color: white !important;
+  color: #fff !important;
   padding: 11px 16px;
   font-size: 37px;
   border: 1px solid;
@@ -527,7 +447,6 @@ html {
   width: calc(100px - 36px);
   background-color: orange;
 }
-
 .main-content
   .content
   .container
@@ -536,16 +455,12 @@ html {
   img {
   transform: scale(1.1);
 }
-
 .main-content
   .content
   .container
   .section1-film-container
   .film-container:hover
-  .film-name {
-  transform: scale(1);
-}
-
+  .film-name,
 .main-content
   .content
   .container
@@ -554,7 +469,6 @@ html {
   span {
   transform: scale(1);
 }
-
 .main-content
   .content
   .container
@@ -565,12 +479,10 @@ html {
   transform: scale(1.3);
   opacity: 1;
 }
-
 .main-content .section1-film .section1-film-container.active {
   opacity: 1;
   transform: scale(1);
 }
-
 .main-content .icon-next {
   width: 100%;
   height: 75%;
@@ -579,31 +491,24 @@ html {
   align-items: center;
   justify-content: flex-end;
 }
-
 .main-content .icon-next #icon-next1 {
-  padding: 8px 8px;
+  padding: 8px;
   font-size: 40px;
   z-index: 1;
   border-radius: 50%;
-  background-color: yellow;
+  background-color: #ff0;
   opacity: 0.3;
   transition: 0.3s ease-in-out;
 }
 .main-content .icon-next #icon-next1:hover {
   opacity: 1;
 }
-
 .main-content .content .container .section2 {
   width: 100%;
   height: 500px;
   margin-top: 32px;
   margin-bottom: 15px;
 }
-
-.main-content .content .container .comment-fb {
-  background-color: white;
-}
-
 .main-content .content .container .more-movie .social .vote .start-outer {
   position: relative;
   display: inline-block;
@@ -611,7 +516,6 @@ html {
   color: #ccc;
   font-size: 24px;
 }
-
 .main-content .content .container .more-movie .social .vote .stars-inner {
   position: absolute;
   top: 0;
@@ -620,21 +524,20 @@ html {
   overflow: hidden;
   color: #f8ce0b;
 }
-
 .main-content
   .content
   .container
   .more-movie
   .social
   .vote
-  .stars-outer::before,
+  .stars-inner::before,
 .main-content
   .content
   .container
   .more-movie
   .social
   .vote
-  .stars-inner::before {
+  .stars-outer::before {
   content: "★★★★★ ★★★★★";
   font-size: 24px;
 }
@@ -642,29 +545,25 @@ html {
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 3; /* Hiệu ứng sẽ nằm trên các lớp có z-index < 3 */
+  z-index: 3;
 }
-
 .trail {
   position: absolute;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: radial-gradient(circle, #9d4edd, #00b4d8); /* vệt sáng phối màu */
+  background: radial-gradient(circle, #9d4edd, #00b4d8);
   pointer-events: none;
   box-shadow: 0 0 8px #f4d35e, 0 0 15px #9d4edd,
     0 0 30px rgba(255, 255, 255, 0.3);
-  animation: fadeOut 1s forwards;
+  animation: 1s forwards fadeOut;
 }
-
 @keyframes fadeOut {
   to {
     opacity: 0;
     transform: scale(2);
   }
 }
-
-/* Phần new của các phim đầu */
 .main-content
   .content
   .container
@@ -678,8 +577,7 @@ html {
   bottom: 0;
   overflow: hidden;
   transform: translateY(100%);
-  transition: transform 0.5s ease-in-out;
-  transition-delay: 0.2s;
+  transition: transform 0.5s ease-in-out 0.2s;
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.4),
@@ -687,7 +585,6 @@ html {
   );
   z-index: 1;
 }
-
 .main-content
   .content
   .container
@@ -696,7 +593,6 @@ html {
   .overflow_film {
   transform: translateY(0);
 }
-
 .main-content
   .content
   .container
@@ -708,12 +604,11 @@ html {
   padding-top: 50%;
   padding-left: 10px;
   padding-right: 10px;
-  color: white;
+  color: #fff;
   font-size: 12px;
   margin: 0 0 0.5rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
-
 .main-content
   .content
   .container
@@ -730,7 +625,6 @@ html {
   -webkit-line-clamp: 5;
   margin-top: 5px;
 }
-
 .main-content
   .content
   .container
@@ -746,7 +640,6 @@ html {
   padding-left: 10px;
   padding-right: 10px;
 }
-
 .main-content
   .content
   .container
@@ -765,16 +658,13 @@ html {
   -webkit-line-clamp: 3;
   line-height: 15px;
 }
-
-/* Phần bình luận */
 .main-content .content .container .comment-fb .comment-container {
   width: 100%;
   margin: 50px auto;
   background: #fff;
-  padding: 30px;
+  padding: 20px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  padding: 20px;
 }
 .main-content .content .container .comment-fb h2 {
   color: #111827;
@@ -794,6 +684,7 @@ html {
   padding-bottom: 16px;
   border-bottom: 1px solid #e5e7eb;
 }
+.main-content .content .container .comment-fb form.comment-form .avatar,
 .main-content .content .container .comment-fb li.comment-item img.avatar {
   width: 40px;
   height: 40px;
@@ -842,7 +733,7 @@ html {
   top: 8px;
   right: 10px;
   color: #ef4444;
-  background: none;
+  background: 0 0;
   border: none;
   font-size: 1rem;
   cursor: pointer;
@@ -852,19 +743,14 @@ html {
   gap: 12px;
   align-items: flex-start;
 }
-.main-content .content .container .comment-fb form.comment-form .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
 .main-content .content .container .comment-fb .input-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.main-content .content .container .comment-fb.input-area input,
-.main-content .content .container .comment-fb .input-area textarea {
+.main-content .content .container .comment-fb .input-area textarea,
+.main-content .content .container .comment-fb.input-area input {
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
@@ -874,18 +760,18 @@ html {
 .main-content .content .container .comment-fb .input-area input:focus,
 .main-content .content .container .comment-fb .input-area textarea:focus {
   border-color: #3b82f6;
-  outline: none;
+  outline: 0;
 }
 .main-content .content .container .comment-fb .input-area button {
   align-self: flex-end;
   padding: 10px 20px;
   background: #3b82f6;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 12px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 .main-content .content .container .comment-fb .input-area button:hover {
   background: #2563eb;
@@ -923,7 +809,6 @@ html {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
-  display: flex;
   justify-content: center;
   align-items: center;
   display: none;
@@ -941,13 +826,11 @@ html {
   .comment-form
   .input-area
   h4 {
-  margin: 0;
-  margin-top: 5px;
+  margin: 5px 0 0;
 }
 .main-content .content .container .comment-fb ul.comment-list .avatar {
   border-radius: 50%;
 }
-
 .main-content .content .container .comment-fb .comment-container h2 {
   text-align: center;
 }

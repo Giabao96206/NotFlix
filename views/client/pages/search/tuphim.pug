@@ -1,0 +1,42 @@
+extends ../../layout/default.pug
+
+block headExtra
+    link(rel='stylesheet', href='../../../../css/styletuphim.css')
+    link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
+
+block header
+  include ../../partials/header
+  include ../../partials/container1
+  include ../../partials/container2
+  include ../../partials/showWatch
+
+
+block content
+  #fb-root
+  script(async='' defer='' crossorigin='anonymous' src='https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v22.0&appId=1030927452270689')
+  script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
+  #particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
+
+  .main-content
+    .content
+      .container
+        .movie
+          +showWatch2(phim)
+          +showmovie2(phimbo)
+          
+
+  script. 
+    let users = !{JSON.stringify(user)};
+    let users2 = !{JSON.stringify(phim)};
+    for(let i = 0; i < users2.length; i++) {
+        console.log(users2[i].movie);
+    }
+            
+  
+  script(src="../../../../js/tuphim.script.js") 
+
+
+  link(rel='stylesheet', href='../../../../css/watchresponesive.css')
+
+//- block footer 
+//-   include ../../partials/footer

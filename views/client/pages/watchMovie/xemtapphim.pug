@@ -1,93 +1,89 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title Document
+extends ../../layout/default.pug
+
+block headExtra
     link(rel='stylesheet', href='../../../../css/stylewatchmain.css')
     link(rel="stylesheet", href="../../../../css/watchmainresponesive.css")
     link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
-  body
+    
 block header
   include ../../partials/header
   include ../../partials/container1
   include ../../partials/container2
   include ../../partials/showwatchmain
-  link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
   link(rel='stylesheet', href='../../../../css/watchresponesive.css')
-  script(src='https://cdn.jsdelivr.net/npm/hls.js@latest')
-#fb-root
-script(async='' defer='' crossorigin='anonymous' src='https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v22.0&appId=1030927452270689')
-script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
-script(src='/socket.io/socket.io.js')
+  script(src="https://cdn.jsdelivr.net/npm/hls.js@latest")
 
-#particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
-script(src='https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1')
-df-messenger(intent='WELCOME' chat-title='ChatBoxAI_Film' agent-id='ffe0518f-1c47-4ff8-b435-454c4dc88c62' language-code='en')
 
-// Thanh Header
-// Phần Cotent
-.main-content
-  .content
-    .container
-      .movie
-        +showmain2(film)
-      if user
-        .comment-fb
-          .comment-container
-            h2 Bình luận
-            ul#comment-list.comment-list
-            form#comment-form.comment-form
-              img.avatar(src=`${user.avatar}` alt='avatar')
-              .input-area
-                h4#name-input #{user.email}
-                textarea#comment-input(placeholder='Bạn đang nghĩ gì?' rows='3' required='')
-                input#image-input(type='file' accept='image/*' multiple='')
-                #preview.preview-images
-                #icon-bar.icon-bar
-                  span(data-emoji='😊') &#x1F60A;
-                  span(data-emoji='❤️') &#x2764;&#xFE0F;
-                  span(data-emoji='👍') &#x1F44D;
-                  span(data-emoji='😂') &#x1F602;
-                  span(data-emoji='😎') &#x1F60E;
-                  span(data-emoji='🤩') &#x1F929;
-                  span(data-emoji='😢') &#x1F622;
-                  span(data-emoji='😠') &#x1F620;
-                  span(data-emoji='🎉') &#x1F389;
-                button(type='submit') G&#x1EED;i
-        #image-modal.modal
-          img#modal-img(src='')
-      else 
-        .comment-fb
-          .comment-container
-            h2 Bình luận
-            p Vui l&ograve;ng <a(href='/login')>đăng nhập</a> để b&igrave;nh lu&#x1EAD;n
 
-      +showmovie2(phimbo)
-block footer 
-  include ../../partials/footer
+block content
+  #fb-root
 
-script(src='../../../../js/commentphim.js')
-script(src='../../../../js/xemtapphim.js')
-script. 
-  // Lấy danh sách tập
-  let episodenow = document.querySelectorAll(".main-content .content .container .episode ul li a");
-  // Lấy giá trị 'part' từ URL (vd: ?part=5)
- let part = window.location.href;
- let part1 = part.split("/");
-  // Gán màu cho tập đang xem
-  episodenow.forEach((item) => {
-    if (item.title === part1[5]) {
-      item.style.backgroundColor = "red";
-    }
-  });
 
-  // Tự động scroll đến tập đang xem
-  window.addEventListener("DOMContentLoaded", function () {
-    let now = document.querySelector(
-      ".main-content .content .container .episode ul li a[title='" + part1[5] + "']"
-    );
-    if (now) {
-      now.scrollIntoView({ behavior: "smooth", inline: "center" });
-    }
-  }); 
+  // Thanh Header
+  // Phần Cotent
+  .main-content
+    .content
+      .container
+        .movie
+          +showmain2(film)
+        if user
+          .comment-fb
+            .comment-container
+              h2 Bình luận
+              ul#comment-list.comment-list
+              form#comment-form.comment-form
+                img.avatar(src=`${user.avatar}` alt='avatar')
+                .input-area
+                  h4#name-input #{user.email}
+                  textarea#comment-input(placeholder='Bạn đang nghĩ gì?' rows='3' required='')
+                  input#image-input(type='file' accept='image/*' multiple='')
+                  #preview.preview-images
+                  #icon-bar.icon-bar
+                    span(data-emoji='😊') &#x1F60A;
+                    span(data-emoji='❤️') &#x2764;&#xFE0F;
+                    span(data-emoji='👍') &#x1F44D;
+                    span(data-emoji='😂') &#x1F602;
+                    span(data-emoji='😎') &#x1F60E;
+                    span(data-emoji='🤩') &#x1F929;
+                    span(data-emoji='😢') &#x1F622;
+                    span(data-emoji='😠') &#x1F620;
+                    span(data-emoji='🎉') &#x1F389;
+                  button(type='submit') G&#x1EED;i
+          #image-modal.modal
+            img#modal-img(src='')
+        else 
+          .comment-fb
+            .comment-container
+              h2 Bình luận
+              p Vui l&ograve;ng <a(href='/login')>đăng nhập</a> để b&igrave;nh lu&#x1EAD;n
+
+        +showmovie2(phimbo)
+
+
+  script(src='../../../../js/commentphim.js')
+  script(src='../../../../js/xemtapphim.js')
+  script. 
+      // Lấy danh sách tập
+      let episodenow = document.querySelectorAll(".main-content .content .container .episode ul li a");
+      // Lấy giá trị 'part' từ URL (vd: ?part=5)
+    let part = window.location.href;
+    let part1 = part.split("/");
+      // Gán màu cho tập đang xem
+      episodenow.forEach((item) => {
+        if (item.title === part1[5]) {
+          item.style.backgroundColor = "red";
+        }
+      });
+
+      // Tự động scroll đến tập đang xem
+      window.addEventListener("DOMContentLoaded", function () {
+        let now = document.querySelector(
+          ".main-content .content .container .episode ul li a[title='" + part1[5] + "']"
+        );
+        if (now) {
+          now.scrollIntoView({ behavior: "smooth", inline: "center" });
+        }
+      }); 
+
+//- block footer 
+  //- include ../../partials/footer

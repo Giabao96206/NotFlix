@@ -1,11 +1,6 @@
+let config = require("../../config/AdminDatabase");
+
 const sql = require("mssql");
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: { encrypt: false, trustServerCertificate: true },
-};
 
 module.exports.profile = async (req, res) => {
   const email = req.params.email;
@@ -29,9 +24,29 @@ module.exports.profile = async (req, res) => {
     if (result.recordset.length === 0) {
       return res.status(404).send("Không tìm thấy người dùng với email này");
     }
+
+    let moreFriend = await pool.request().input("email", sql.VarChar, email)
+      .query(`
+                    SELECT u.*
+                    FROM users u
+                    WHERE u.email != @email
+                    AND u.email NOT IN (
+                    SELECT f.friend_email
+                    FROM friends f
+                    WHERE f.user_email = @email  AND (f.status = 'accepted' OR f.status = 'pending')
+                    UNION
+                    SELECT f.user_email
+                    FROM friends f
+                    WHERE f.friend_email = @email  AND (f.status = 'accepted' OR f.status = 'pending')
+                    ); `);
+    if (moreFriend.recordset.length === 0) {
+      return res.status(404).send("Có lỗi");
+    }
+
     res.render("client/pages/search/profile", {
       user: req.session.user,
       profile: result.recordset[0],
+      moreFriend: moreFriend.recordset,
     });
   } catch (err) {
     console.error("Lỗi khi truy cập profile:", err);

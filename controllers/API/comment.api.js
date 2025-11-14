@@ -9,13 +9,7 @@ app.use(express.static(path.join(__dirname, "../../uploads")));
 app.use(express.json()); // Middleware để parse JSON request body
 app.use(cors());
 // app.use(express.static(path.join(__dirname, "uploads")));
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "DESKtop1",
-  options: { encrypt: false, trustServerCertificate: true },
-};
+let config = require("../../config/AdminDatabase");
 
 // cấu ha=ình upload
 

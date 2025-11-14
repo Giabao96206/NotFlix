@@ -4,23 +4,13 @@ const {
   PhimVienTuong,
 } = require("../../models/products.model");
 const { connectdtb } = require("../../config/database.js");
+let fetchAPI = require("../../helpers/FetchAPI");
 connectdtb();
 
 async function getProducts(model, query) {
   const products = await model.find(query);
   return products;
 }
-
-const fetchAPI = async (api) => {
-  try {
-    const response = await fetch(api);
-    const data = await response.json();
-    return data?.items || data?.data?.items || [];
-  } catch (error) {
-    console.error(`Lỗi khi gọi API: ${api}`, error);
-    return [];
-  }
-};
 
 module.exports.index = async (req, res) => {
   try {
@@ -60,9 +50,9 @@ module.exports.index = async (req, res) => {
       getProducts(PhimBo, {}),
       fetchAPI(`https://phimapi.com/danh-sach/phim-moi-cap-nhat-v3?page=${b}`),
       getProducts(PhimLe, { chieurap: true, year: 2024 }),
-      getProducts(PhimLe, { chieurap: true, year: 2024 }),
-      getProducts(PhimLe, { chieurap: true, year: 2024 }),
-      getProducts(PhimLe, { chieurap: true, year: 2024 }),
+      getProducts(PhimLe, { chieurap: true, year: 2023 }),
+      getProducts(PhimLe, { chieurap: true, year: 2022 }),
+      getProducts(PhimLe, { chieurap: true, year: 2021 }),
       getProducts(PhimLe, { country: "Việt Nam" }),
       getProducts(PhimBo, { country: "Việt Nam" }),
     ]);

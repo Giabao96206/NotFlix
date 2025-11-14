@@ -19,13 +19,7 @@ function getLocalIP() {
   return "localhost";
 }
 
-const config = {
-  user: "sa",
-  password: "Giahuybao123zx",
-  server: "localhost",
-  database: "loacalip",
-  options: { encrypt: false, trustServerCertificate: true },
-};
+let config = require("../../config/AdminDatabase");
 
 let local = (app) => {
   app.post("/api/getip", async (req, res) => {

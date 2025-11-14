@@ -83,3 +83,5 @@ function renderPagination() {
 }
 
 renderPagination();
+
+// Phần kiểm tra ảnh có chạy k

@@ -1,35 +1,32 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title Document
+extends ../../layout/default.pug
+
+block headExtra
     link(rel='stylesheet', href='../../../../css/stylesearch.css')
     link(rel="stylesheet", href="../../../../css/searchresponsive.css")
     link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
-  body
+    
 block header
   include ../../partials/header
   include ../../partials/searchmain
-  link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
-  script(src='https://cdn.jsdelivr.net/npm/hls.js@latest')
-// Phần content
-script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
-#particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
-.main-content
-  .mainhotro 
-  .content
-    .container
-      +show(film, name)
 
-block footer 
-  include ../../partials/footer
-script.
-  let part = window.location.pathname.split("/");
-  let num = parseInt(part[3].split("-")[1]);
-  let leng = !{JSON.stringify(leng)}
-  console.log(num);
+
   
+block content
+  .main-content
+    .mainhotro 
+    .content
+      .container
+        +show(film, name)
 
-script(src="../../../../js/phantrang.js") 
-script(src="../../../../js/phantrang.api.js") 
+  script.
+    let part = window.location.pathname.split("/");
+    let num = parseInt(part[3].split("-")[1]);
+    let leng = !{JSON.stringify(leng)}
+    console.log(num);
+    
+
+  script(src="../../../../js/phantrang.js") 
+  script(src="../../../../js/phantrang.api.js") 
+  
+//- block footer 
+//-   include ../../partials/footer

@@ -92,10 +92,16 @@ document.addEventListener("click", (e) => {
 let thean = document.querySelector(
   "#header #nav .nav2 .about-user .showmore .theshow a"
 );
-thean.addEventListener("click", function (e) {
-  e.preventDefault();
-  revealList();
-});
+if (!thean) {
+  console.log("Không tìm thấy phần tử thean");
+} else {
+  console.log(thean);
+  thean.addEventListener("click", function (e) {
+    e.preventDefault();
+    revealList();
+  });
+}
+
 function revealList() {
   const list = document.querySelector(
     "#header #nav .nav2 .about-user .more-option ul "
@@ -129,18 +135,24 @@ function revealList() {
     }, items.length * 100); // Đợi hiệu ứng hoàn thành trước khi ẩn
   }
 }
-document
-  .querySelector("#header #nav .nav2 .about-user .btn-close")
-  .addEventListener("click", function (event) {
+
+let v = document.querySelector("#header #nav .nav2 .about-user .btn-close");
+if (!v) {
+  console.log("Không tìm thấy phần tử v");
+} else {
+  v.addEventListener("click", function (event) {
     event.preventDefault();
     document.querySelector(
       "#header #nav .nav2 .login-sucess .about-user"
     ).style.display = "none";
   });
+}
 
-document
-  .querySelector("#header #nav .nav2 .login-sucess .img-1")
-  .addEventListener("click", () => {
+let loginSuccessImg = document.querySelector(
+  "#header #nav .nav2 .login-sucess .img-1"
+);
+if (loginSuccessImg) {
+  loginSuccessImg.addEventListener("click", () => {
     let a = document.querySelector(
       "#header #nav .nav2 .login-sucess .about-user"
     );
@@ -150,10 +162,12 @@ document
       a.style.display = "none";
     }
   });
-
-document
-  .querySelector("#header #nav .nav2 .about-user .more-option .logout")
-  .addEventListener("click", async (event) => {
+}
+let logoutBtn = document.querySelector(
+  "#header #nav .nav2 .about-user .more-option .logout"
+);
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async (event) => {
     event.preventDefault();
     let conf = confirm("Bạn có chắc muốn đăng xuất không?");
     if (conf) {
@@ -169,3 +183,22 @@ document
       }
     }
   });
+}
+
+let bell = document.querySelector("#header #nav .nav2 .notification i");
+let more_notification = document.querySelector(
+  "#header #nav .nav2 .notification .more-notification"
+);
+if (bell) {
+  bell.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (
+      more_notification.style.display === "none" ||
+      more_notification.style.display === ""
+    ) {
+      more_notification.style.display = "block";
+    } else {
+      more_notification.style.display = "none";
+    }
+  });
+}

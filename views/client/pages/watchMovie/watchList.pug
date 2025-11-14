@@ -1,13 +1,9 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title Document
+extends ../../layout/default.pug
+
+block headExtra
     link(rel='stylesheet', href='../../../../css/stylewatch.css')
     link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
 
-  body
 block header
   include ../../partials/header
   include ../../partials/container1
@@ -16,54 +12,57 @@ block header
   link(rel="stylesheet", href="../../../../Icon/themify-icons/themify-icons.css")
 
 
-    
-#fb-root
-script(async='' defer='' crossorigin='anonymous' src='https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v22.0&appId=1030927452270689')
-script(src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js')
-#particles-js(style='position:fixed;width:100%;height:100%;z-index:0;')
-
-.main-content
-  .content
-    .container
-      .movie
-        +showWatch(film)
-      //- if user
-      //-   .comment-fb
-      //-     .comment-container
-      //-       h2 Bình luận
-      //-       ul#comment-list.comment-list
-      //-       form#comment-form.comment-form
-      //-         img.avatar(src=`${user.avatar}` alt='avatar')
-      //-         .input-area
-      //-           h4#name-input #{user.email}
-      //-           textarea#comment-input(placeholder='Bạn đang nghĩ gì?' rows='3' required='')
-      //-           input#image-input(type='file' accept='image/*' multiple='')
-      //-           #preview.preview-images
-      //-           #icon-bar.icon-bar
-      //-             span(data-emoji='😊') &#x1F60A;
-      //-             span(data-emoji='❤️') &#x2764;&#xFE0F;
-      //-             span(data-emoji='👍') &#x1F44D;
-      //-             span(data-emoji='😂') &#x1F602;
-      //-             span(data-emoji='😎') &#x1F60E;
-      //-             span(data-emoji='🤩') &#x1F929;
-      //-             span(data-emoji='😢') &#x1F622;
-      //-             span(data-emoji='😠') &#x1F620;
-      //-             span(data-emoji='🎉') &#x1F389;
-      //-           button(type='submit') G&#x1EED;i
-      //-   #image-modal.modal
-      //-     img#modal-img(src='')
-      //- else 
-      //-   .comment-fb
-      //-     .comment-container
-      //-       h2 Bình luận
-      //-       p Vui l&ograve;ng <a(href='/login')>đăng nhập</a> để b&igrave;nh lu&#x1EAD;n
-      +showmovie2(phimbo)
+block content
 
 
-block footer 
+  .main-content
+    .content
+      .container
+        .movie
+          +showWatch(film)
+        //- if user
+        //-   .comment-fb
+        //-     .comment-container
+        //-       h2 Bình luận
+        //-       ul#comment-list.comment-list
+        //-       form#comment-form.comment-form
+        //-         img.avatar(src=`${user.avatar}` alt='avatar')
+        //-         .input-area
+        //-           h4#name-input #{user.email}
+        //-           textarea#comment-input(placeholder='Bạn đang nghĩ gì?' rows='3' required='')
+        //-           input#image-input(type='file' accept='image/*' multiple='')
+        //-           #preview.preview-images
+        //-           #icon-bar.icon-bar
+        //-             span(data-emoji='😊') &#x1F60A;
+        //-             span(data-emoji='❤️') &#x2764;&#xFE0F;
+        //-             span(data-emoji='👍') &#x1F44D;
+        //-             span(data-emoji='😂') &#x1F602;
+        //-             span(data-emoji='😎') &#x1F60E;
+        //-             span(data-emoji='🤩') &#x1F929;
+        //-             span(data-emoji='😢') &#x1F622;
+        //-             span(data-emoji='😠') &#x1F620;
+        //-             span(data-emoji='🎉') &#x1F389;
+        //-           button(type='submit') G&#x1EED;i
+        //-   #image-modal.modal
+        //-     img#modal-img(src='')
+        //- else 
+        //-   .comment-fb
+        //-     .comment-container
+        //-       h2 Bình luận
+        //-       p Vui l&ograve;ng <a(href='/login')>đăng nhập</a> để b&igrave;nh lu&#x1EAD;n
+        +showmovie2(phimbo)
+
+
+  script. 
+    let users = !{JSON.stringify(user)};
+    console.log(users);
+  
+  script(src="../../../../js/watchlist.script.js") 
+
+
+  link(rel="stylesheet", href="../../../../css/stylewatch.css")
+  link(rel='stylesheet', href='../../../../css/watchresponesive.css')
+
+
+  block footer 
   include ../../partials/footer
- 
-script(src="../../../../js/watchlist.script.js") 
-
-link(rel="stylesheet", href="../../../../css/stylewatch.css")
-link(rel='stylesheet', href='../../../../css/watchresponesive.css')

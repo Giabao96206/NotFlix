@@ -1,4 +1,5 @@
 const products = document.querySelectorAll(".container");
+console.log(products);
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -12,7 +13,7 @@ const observer = new IntersectionObserver(
   {
     root: document.querySelector(".num1"), // Giới hạn quan sát trong vùng cuộn
     rootMargin: "0px",
-    threshold: 0.6, // Khi 60% sản phẩm vào vùng nhìn thấy thì kích hoạt hiệu ứng
+    threshold: 0.2, // Khi 60% sản phẩm vào vùng nhìn thấy thì kích hoạt hiệu ứng
   }
 );
 

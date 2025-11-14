@@ -1,5 +1,12 @@
-const products = document.querySelectorAll(".section1-film-container");
+let like = document.querySelector(
+  ".main-content .content .container .more-movie .social .sharelike .share"
+);
+let unlike = document.querySelector(
+  ".main-content .content .container .more-movie .social .sharelike .unlike"
+);
 
+const products = document.querySelectorAll(".section1-film-container");
+let slug = window.location.pathname.split("/")[2];
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -66,56 +73,6 @@ function updateStars(score) {
 
 updateStars(score);
 
-particlesJS("particles-js", {
-  particles: {
-    number: {
-      value: 150,
-    },
-    color: {
-      value: "#ffffff",
-    },
-    shape: {
-      type: "circle",
-    },
-    opacity: {
-      value: 0.5,
-    },
-    size: {
-      value: 5,
-    },
-    line_linked: {
-      enable: true,
-      distance: 150,
-      color: "#ffffff",
-      opacity: 0.4,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      speed: 2,
-    },
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: true,
-        mode: "repulse", // Các mode khác: "grab", "bubble"
-      },
-      onclick: {
-        enable: true,
-        mode: "push",
-      },
-    },
-    modes: {
-      repulse: {
-        distance: 100,
-      },
-    },
-  },
-  retina_detect: true,
-});
-
 document.addEventListener("mousemove", function (e) {
   const trail = document.createElement("div");
   trail.className = "trail";
@@ -178,3 +135,63 @@ document
       item.scrollLeft += 300;
     });
   });
+
+// Check like phim chưa
+async function toggleWatchlist(method) {
+  try {
+    const response = await fetch("/watchlist", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: users.email, name: slug }),
+    });
+
+    const data = await response.json();
+
+    // Chuyển trạng thái hiển thị nút
+    if (method === "POST") {
+      like.style.display = "none";
+      unlike.style.display = "inline-block";
+    } else {
+      like.style.display = "inline-block";
+      unlike.style.display = "none";
+    }
+  } catch (err) {
+    console.error("Lỗi xử lý watchlist:", err);
+  }
+}
+
+// Xử lý nút Like
+like.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!users) return alert("Vui lòng đăng nhập");
+  toggleWatchlist("POST");
+});
+
+// Xử lý nút Unlike
+unlike.addEventListener("click", (e) => {
+  e.preventDefault();
+  toggleWatchlist("DELETE");
+});
+
+// Kiểm tra đã like hay chưa
+async function checkLikeStatus(email, slug) {
+  try {
+    const response = await fetch(`/checklike?email=${email}&name=${slug}`);
+    const data = await response.json();
+
+    const liked = data.message == 1; // hoặc data.liked nếu bạn đổi response như đã gợi ý trước
+    like.style.display = liked ? "none" : "inline-block";
+    unlike.style.display = liked ? "inline-block" : "none";
+  } catch (err) {
+    console.error("Lỗi kiểm tra trạng thái like:", err);
+  }
+}
+
+// Gọi khi trang load
+if (users) {
+  checkLikeStatus(users.email, slug);
+}
+
+const link = document.querySelector("a[name]");
+const nameValue = link.getAttribute("name");
+document.title = nameValue;
