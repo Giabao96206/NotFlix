@@ -283,7 +283,8 @@ link(rel='stylesheet' href='./Component/Icon/themify-icons/themify-icons.css')
           img(src="../../../../imgage/Bean Eater@1x-1.0s-200px-200px.svg", alt="" id="#loader" class="loader" )
           li 
 script. 
- let users = !{JSON.stringify(user)};   
+  window.__USER__ = !{JSON.stringify(user)};
+  let users = window.__USER__;  
 script(src='../../../js/timkiemgoiy.js')
 script(src='../../../js/responsiveheader.js')
 script(src='../../../js/headerbell.js')

@@ -82,7 +82,8 @@ block content
 
 
   script. 
-    let user = !{JSON.stringify(user)};
+    window.__USER__ = !{JSON.stringify(user)};
+    let user =  window.__USER__;
     let profiles = !{JSON.stringify(profile)};
     let moreFriend = !{JSON.stringify(moreFriend)};
     console.log(user)

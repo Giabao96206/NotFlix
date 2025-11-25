@@ -54,8 +54,9 @@ block content
 
 
   script. 
-    let users = !{JSON.stringify(user)};
-    console.log(users);
+    window.__USER__ = !{JSON.stringify(user)};
+    let users = window.__USER__;
+    
   
   script(src="../../../../js/watchlist.script.js") 
 

@@ -1,6 +1,6 @@
 const fileInput = document.querySelector(".input-area .img-input");
 const previewArea = document.querySelector(".input-area .preview");
-const socket = io();
+const socket = null;
 let fileIdCounter = 0;
 let mySocketId = null;
 let filesToUpload = [];
@@ -12,6 +12,9 @@ let isLoadingFriends = false;
 let usersList = []; // để lưu danh sách bạn bè từ server
 
 // Load danh sách bạn bè
+if (users) {
+  socket = io();
+}
 async function loadFriends() {
   if (isLoadingFriends) return;
   isLoadingFriends = true;

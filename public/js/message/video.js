@@ -1,4 +1,4 @@
-const socket = io();
+const socket = null;
 
 const localVideo = document.getElementById("localVideo");
 const remoteVideo = document.getElementById("remoteVideo");
@@ -36,6 +36,10 @@ const ringtone = new Audio(
   "../../../sounds/Phép Màu (Đàn Cá Gỗ OST) - Mounter x MAYDAYs, Minh Tốc ｜ Official MV.mp3"
 );
 ringtone.loop = true;
+
+if (users) {
+  socket = io();
+}
 
 // -------------------- UI Helpers --------------------
 

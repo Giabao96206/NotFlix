@@ -31,7 +31,6 @@ const commnet = (app, io) => {
   });
 
   io.on("connection", (socket) => {
-    console.log("A user connected");
     socket.on("on-chat", async (data) => {
       try {
         const slug = data.slug;

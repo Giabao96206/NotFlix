@@ -1,5 +1,7 @@
-let socket = io();
+let socket = null;
+let users = window.__USER__;
 if (users) {
+  socket = io();
   socket.on("connect", () => {
     mySocketId = socket.id;
     socket.emit("register", { email: users.email });

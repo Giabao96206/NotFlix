@@ -1,3 +1,4 @@
+console.log(users);
 let like = document.querySelector(
   ".main-content .content .container .more-movie .social .sharelike .share"
 );

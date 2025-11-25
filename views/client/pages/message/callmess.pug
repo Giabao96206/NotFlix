@@ -29,7 +29,9 @@ html
       button#declineCall ❌ Từ chối
 
 script.
-  let users = !{JSON.stringify(user)};
+  window.__USER__ = !{JSON.stringify(user)};
+  const users = window.__USER__;
+ 
   let CURRENT_USER  = users.email
   let TARGET_USER  = "#{email}";
  console.log("Current User:", CURRENT_USER);

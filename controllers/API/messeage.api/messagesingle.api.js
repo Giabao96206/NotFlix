@@ -37,7 +37,7 @@ const message = (app, io) => {
   const users = {}; // users[email] = [socketId1, socketId2, ...]
 
   io.on("connection", (socket) => {
-    console.log("🔌 User connected, socket id:", socket.id);
+    // console.log("🔌 User connected, socket id:", socket.id);
     socket.emit("registered", { id_main: socket.id });
 
     // Khi client đăng ký (gửi email)

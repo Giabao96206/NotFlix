@@ -26,7 +26,8 @@ block content
           
 
   script. 
-    let users = !{JSON.stringify(user)};
+    window.__USER__ = !{JSON.stringify(user)};
+    let users = window.__USER__;
     let users2 = !{JSON.stringify(phim)};
     for(let i = 0; i < users2.length; i++) {
         console.log(users2[i].movie);

@@ -89,7 +89,8 @@ head
 
 
 script. 
- let users = !{JSON.stringify(user)}; 
+ window.__USER__ = !{JSON.stringify(user)};
+ let users = window.__USER__;
  let receivers = !{JSON.stringify(receiver)};
 
 
