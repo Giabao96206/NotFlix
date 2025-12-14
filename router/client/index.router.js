@@ -1,7 +1,6 @@
 const ProductRouter = require("./product.router");
 const homeRouter = require("./home.router");
 const watchRouter = require("./watch.router");
-const watchmainRouter = require("./watchmain.router");
 const watchtapphimRouter = require("./watchtapphim.router");
 const searchRouter = require("./search.router");
 const countryRouter = require("./country.router");
@@ -21,7 +20,6 @@ module.exports = (app) => {
   app.use("/login", loginRouter);
   app.use("/products", ProductRouter);
   app.use("/watch", watchRouter);
-  app.use("/watchmain", watchmainRouter);
   app.use("/watchmain", watchtapphimRouter);
   app.use("/search", searchRouter);
   app.use("/country", countryRouter);

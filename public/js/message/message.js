@@ -4,17 +4,13 @@ const socket = null;
 let fileIdCounter = 0;
 let mySocketId = null;
 let filesToUpload = [];
-console.log(users);
+
 let typingTimeout;
 let typingIndicator = document.getElementById("typingIndicator");
 
 let isLoadingFriends = false;
 let usersList = []; // để lưu danh sách bạn bè từ server
 
-// Load danh sách bạn bè
-if (users) {
-  socket = io();
-}
 async function loadFriends() {
   if (isLoadingFriends) return;
   isLoadingFriends = true;

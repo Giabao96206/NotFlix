@@ -2,7 +2,7 @@ const config = {
   user: "sa",
   password: "Giahuybao123zx",
   server: "localhost",
-  database: "DESKtop1",
+  database: "QLTVTITV",
   options: { encrypt: false, trustServerCertificate: true },
 };
 

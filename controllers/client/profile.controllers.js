@@ -11,9 +11,6 @@ module.exports.profile = async (req, res) => {
     return res.redirect("/login");
   }
   try {
-    // if (req.session.user.email !== email) {
-    //   return res.status(403).send("Bạn không có quyền truy cập vào trang này");
-    // }
     let pool = await sql.connect(config);
     let result = await pool
       .request()
@@ -39,9 +36,6 @@ module.exports.profile = async (req, res) => {
                     FROM friends f
                     WHERE f.friend_email = @email  AND (f.status = 'accepted' OR f.status = 'pending')
                     ); `);
-    if (moreFriend.recordset.length === 0) {
-      return res.status(404).send("Có lỗi");
-    }
 
     res.render("client/pages/search/profile", {
       user: req.session.user,
