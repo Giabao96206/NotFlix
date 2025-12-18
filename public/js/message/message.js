@@ -1,6 +1,6 @@
 const fileInput = document.querySelector(".input-area .img-input");
 const previewArea = document.querySelector(".input-area .preview");
-const socket = null;
+const socket = io();
 let fileIdCounter = 0;
 let mySocketId = null;
 let filesToUpload = [];

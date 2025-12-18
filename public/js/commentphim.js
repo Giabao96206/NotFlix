@@ -4,7 +4,8 @@ console.log(path);
 let avatar = document.querySelector(
   ".main-content .content .container .comment-fb form.comment-form .avatar"
 );
-
+console.log(avatar.src);
+const socket = io();
 const form = document.querySelector(
   ".main-content .content .container .comment-fb form.comment-form"
 );
